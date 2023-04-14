@@ -1,25 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import {useContext} from "react";
+import {Route, Switch} from "react-router-dom";
+import {UserContext} from "./context/UserContext";
 
-function App() {
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import Profile from './pages/Profile';
+import Typrrman from './pages/Typrrman';
+
+export default function App() {
+
+  const { isAuth } = useContext(UserContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <div>
+          <Switch>
+            <Route exact path="/" component={Typrrman}/>
+            <Route exact path="/signin" component={SignUp}/>
+            <Route exact path="/signup" component={SignIn}/>
+            <Route exact path="/profile" component={ isAuth ? Profile : Typrrman}/>
+          </Switch>
+        </div>
+      </>
   );
 }
-
-export default App;

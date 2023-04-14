@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react';
 import {useHistory} from "react-router-dom";
-export const AuthContext = createContext({});
+export const UserContext = createContext({});
 
 
-export default function AuthContextProvider({ children }) {
+export default function UserContextProvider({ children }) {
 
   const history = useHistory();
 
@@ -67,8 +67,8 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={contextData}>
+    <UserContext.Provider value={contextData}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 }
