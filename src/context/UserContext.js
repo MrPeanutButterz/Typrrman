@@ -1,11 +1,11 @@
 import React, { createContext, useState } from 'react';
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 export const UserContext = createContext({});
 
 
 export default function UserContextProvider({ children }) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const [isAuth, setAuth] = useState({
     isAuth: false,

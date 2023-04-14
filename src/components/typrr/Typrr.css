@@ -1,0 +1,73 @@
+.text-area-container {
+    width: 100%;
+    padding: 25px 30px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    font-family: monospace;
+    font-size: 32px;
+    border: 2px solid black;
+}
+
+.text-field {
+    position: relative;
+    max-width: 1200px;
+    padding: 25px 30px;
+
+    animation: fadeIn ease-in 1s;
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1}
+}
+
+.text-area-input,
+.text-area-input:hover,
+.text-area-input:active,
+.text-area-input:focus {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    font-size: 0;
+    color: transparent;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    border: 2px solid black;
+    outline: 0 !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+    resize: none;
+}
+
+
+.ghost-character {
+    color: rgba(128, 128, 128, 0.62);
+}
+
+.ghost-character:nth-child(1) {
+    animation: blink 0.8s linear infinite;
+    border-radius: 2px;
+}
+
+@keyframes blink {
+    0% {background-color: transparent}
+    50% {background-color: rgb(204, 204, 204)}
+    0% {background-color: transparent}
+}
+
+.correct {
+    color: #c9c9c9;
+}
+
+.incorrect,
+.skipped {
+    color: rgba(128, 128, 128, 0.62);
+    text-decoration: line-through rgba(255, 0, 0, 0.73) 2px;
+}

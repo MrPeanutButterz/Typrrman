@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* ==========  ==========  ========== LAYOUT */
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.nav-left {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.nav-right {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+/* ==========  ==========  ========== ICONS */
+
+#typrr {
+    font-family: 'VT323', monospace;
+    color: orange;
+    font-size: 46px;
+}
+
+#keyboard-logo {
+    height: 50px;
+}
+
+#user-icon {
+    height: 35px;
+}
+
+#settings-icon {
+    height: 35px;
+}

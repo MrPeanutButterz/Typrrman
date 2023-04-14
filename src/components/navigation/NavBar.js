@@ -1,0 +1,21 @@
+import "./NavBar.css"
+import {NavLink} from "react-router-dom";
+
+import logo from "../../assets/keyboard.png"
+import settingsIcon from "../../assets/settings.png"
+import userIcon from "../../assets/user.png"
+
+export default function NavBar() {
+  return <>
+    <nav>
+      <div className="nav-left">
+        <NavLink to="/"><img src={logo} alt="Keyboard-icon" id="keyboard-logo"/></NavLink>
+        <NavLink to="/"><h1 id="typrr">Typrr</h1></NavLink>
+      </div>
+      <div className="nav-right">
+        <NavLink to="/settings"><img src={settingsIcon} alt="Settings-icon" id="settings-icon"/></NavLink>
+        <NavLink to="/login"><img src={userIcon} alt="User-icon" id="user-icon"/></NavLink>
+      </div>
+    </nav>
+  </>
+}
