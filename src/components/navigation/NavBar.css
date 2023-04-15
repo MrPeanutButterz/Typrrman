@@ -12,20 +12,24 @@ nav {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    margin-left: 25px;
 }
 
 .nav-right {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    gap: 10px;
+    margin-right: 25px;
+    margin-top: 10px;
 }
 
 /* ==========  ==========  ========== ICONS */
 
 #typrr {
     font-family: 'VT323', monospace;
-    color: orange;
     font-size: 46px;
+    color: orange;
 }
 
 #keyboard-logo {
@@ -33,9 +37,9 @@ nav {
 }
 
 #user-icon {
-    height: 35px;
+    height: 40px;
 }
 
 #settings-icon {
-    height: 35px;
+    height: 40px;
 }
