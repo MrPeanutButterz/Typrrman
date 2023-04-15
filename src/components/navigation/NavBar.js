@@ -14,7 +14,7 @@ export default function NavBar() {
       </div>
       <div className="nav-right">
         <NavLink to="/settings"><img src={settingsIcon} alt="Settings-icon" id="settings-icon"/></NavLink>
-        <NavLink to="/login"><img src={userIcon} alt="User-icon" id="user-icon"/></NavLink>
+        <NavLink to="/signin"><img src={userIcon} alt="User-icon" id="user-icon"/></NavLink>
       </div>
     </nav>
   </>

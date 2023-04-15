@@ -22,10 +22,10 @@ export default function App() {
       <NavBar/>
         <Routes>
           <Route exact path="/" element={<Home/>}></Route>
-          <Route path="/SignIn" element={<SignIn/>}></Route>
-          <Route path="/SignIn" element={<SignUp/>}></Route>
-          <Route path="/SignIn" element={isAuth ? <Profile/> : <Home/>}></Route>
-          <Route path="/*" element={<Page404/>}></Route>
+          <Route path="/signin" element={<SignIn/>}></Route>
+          <Route path="/signup" element={<SignUp/>}></Route>
+          <Route path="/profile" element={isAuth ? <Profile/> : <Home/>}></Route>
+          <Route path="*" element={<Page404/>}></Route>
         </Routes>
     </>
   );

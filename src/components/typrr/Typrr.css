@@ -3,7 +3,7 @@
     padding: 25px 30px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
 
     font-family: monospace;
@@ -64,8 +64,7 @@
     color: #c9c9c9;
 }
 
-.incorrect,
-.skipped {
+.incorrect {
     color: rgba(128, 128, 128, 0.62);
     text-decoration: line-through rgba(255, 0, 0, 0.73) 2px;
 }

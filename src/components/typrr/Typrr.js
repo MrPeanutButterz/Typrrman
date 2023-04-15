@@ -4,21 +4,24 @@ import React, {useEffect, useState} from "react";
 
 export default function TextField() {
 
+  //todo fix update score on mistake
+
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
     seconds: 60000,
     startTime: 0,
     finishTime: 0,
+    api: 0,
   })
 
   const [text, setText] = useState({
     original: "",
     words: [],
-    inGhost: [],
-    byUser: [],
+    onScreenGhost: [],
+    onScreenUser: [],
+    classArray: [],
     idx: {
-      charIdx: 0,
       wordIdx: 0,
       sentenceIdx: 0,
     },
@@ -27,8 +30,8 @@ export default function TextField() {
   const [score, setScore] = useState({
     keyStrokes: {
       total: 0,
-      correct: 0,
       mistake: 0,
+      corrected: 0,
     },
     xrp: 0,
     wpm: 0,
@@ -36,8 +39,14 @@ export default function TextField() {
   })
 
   useEffect(() => {
-    //fetchWhatTheCommitText()
-    fetchTechyText()
+
+    if (test.api === 0) {
+      fetchTechyText()
+
+    } else if (test.api === 1) {
+      fetchWhatTheCommitText()
+
+    }
   }, []);
 
   async function fetchTechyText() {
@@ -54,7 +63,7 @@ export default function TextField() {
         ...text,
         original: sentence,
         words: sentence.split(" "),
-        inGhost: sentence.split(""),
+        onScreenGhost: sentence.split(""),
       })
     } catch (error) {
       console.error(error)
@@ -74,7 +83,7 @@ export default function TextField() {
         ...text,
         original: sentence,
         words: sentence.split(" "),
-        inGhost: sentence.split(""),
+        onScreenGhost: sentence.split(""),
       })
     } catch (error) {
       console.error(error)
@@ -82,12 +91,69 @@ export default function TextField() {
   }
 
 
-  function carrotForwardsBy(amount) {
+  function onCorrect() {
 
+    //remove first letter from ghost
+    let ghost = text.onScreenGhost
+    let char = ghost.shift()
+
+    //insert that letter in user
+    let user = text.onScreenUser
+    user.push(char)
+
+    //add correct class to char
+    let charClass = text.classArray
+    charClass.push("correct")
+
+    setText({
+      ...text,
+      onScreenGhost: ghost,
+      onScreenUser: user,
+      classArray: charClass,
+    })
   }
 
-  function carrotBackwardsBy(amount) {
+  function onIncorrect(char) {
 
+    //insert that letter in user
+    let user = text.onScreenUser
+    user.push(char)
+
+    //add correct class to char
+    let charClass = text.classArray
+    charClass.push("incorrect")
+
+    setText({
+      ...text,
+      onScreenUser: user,
+      classArray: charClass,
+    })
+  }
+
+  function updateScore(bool) {
+    if (bool) {
+
+      //update keystroke total
+      setScore({
+        ...score,
+        keyStrokes: {
+          total: score.keyStrokes.total += 1,
+          corrected: score.keyStrokes.corrected += 1,
+          mistake: score.keyStrokes.mistake,
+        },
+      })
+    } else {
+
+      //update keystroke total
+      setScore({
+        ...score,
+        keyStrokes: {
+          total: score.keyStrokes.total += 1,
+          corrected: score.keyStrokes.corrected,
+          mistake: score.keyStrokes.mistake += 1,
+        },
+      })
+    }
   }
 
   function handleUserInput(e) {
@@ -123,13 +189,15 @@ export default function TextField() {
 
     } else if (e.keyCode === 32) { // ======================================== WORD ---> WORD
 
-      // Space
-      console.log("Space")
+      // Space bar
+      if (text.onScreenGhost[0] === e.key) {
+        onCorrect(1)
+        updateScore(true)
 
-      setScore({
-        ...score,
-        keyStrokes: {total: score.keyStrokes.total += 1}
-      })
+      } else {
+        onIncorrect(e.key)
+        updateScore(false)
+      }
 
     } else if (e.keyCode === 13) { // ======================================== LINE -<>- LINE
 
@@ -144,29 +212,31 @@ export default function TextField() {
     } else { // ========================================================== CARROT ---> CARROT
 
       // Letter
-      console.log(e.key)
+      if (text.onScreenGhost[0] === e.key) {
+        onCorrect()
+        updateScore(true)
 
-      setScore({
-        ...score,
-        keyStrokes: {total: score.keyStrokes.total += 1}
-      })
-
+      } else {
+        onIncorrect(e.key)
+        updateScore(false)
+      }
     }
   }
+
 
   return (
     <section className="text-area-container">
       <div className="text-field">
         <span className="text-area-user">
-        {text.byUser.map((letter, index) =>
+        {text.onScreenUser.map((letter, index) =>
           <span
             key={index}
-            className="user-character"
+            className={text.classArray[index]}
           >{letter}</span>
         )}
         </span>
         <span className="text-area-ghost">
-        {text.inGhost.map((letter, index) =>
+        {text.onScreenGhost.map((letter, index) =>
           <span
             key={index}
             className="ghost-character"
@@ -182,6 +252,20 @@ export default function TextField() {
           }}
         ></textarea>
       </div>
+
+
+      <div>
+        <p>total keystrokes: {score.keyStrokes.total}</p>
+        <p>corrected chars : {score.keyStrokes.corrected}</p>
+        <p>mistakes made : {score.keyStrokes.mistake}</p>
+
+        <p>{text.original}</p>
+        <p>{text.onScreenUser}</p>
+        <p>{text.onScreenGhost}</p>
+        <p>{text.idx.wordIdx}</p>
+        <p>{text.idx.sentenceIdx}</p>
+      </div>
+
     </section>
   );
 }
