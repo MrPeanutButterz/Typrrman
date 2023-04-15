@@ -20,7 +20,6 @@ export default function App() {
   return (
     <>
       <NavBar/>
-      <main>
         <Routes>
           <Route exact path="/" element={<Home/>}></Route>
           <Route path="/SignIn" element={<SignIn/>}></Route>
@@ -28,7 +27,6 @@ export default function App() {
           <Route path="/SignIn" element={isAuth ? <Profile/> : <Home/>}></Route>
           <Route path="/*" element={<Page404/>}></Route>
         </Routes>
-      </main>
     </>
   );
 }
