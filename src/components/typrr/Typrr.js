@@ -40,10 +40,10 @@ export default function TextField() {
 
   useEffect(() => {
 
-    if (test.api === 0) {
+    if (test.api === 0 && text.original === "") {
       fetchTechyText()
 
-    } else if (test.api === 1) {
+    } else if (test.api === 1 && text.original === "") {
       fetchWhatTheCommitText()
 
     }
@@ -90,46 +90,6 @@ export default function TextField() {
     }
   }
 
-
-  function onCorrect() {
-
-    //remove first letter from ghost
-    let ghost = text.onScreenGhost
-    let char = ghost.shift()
-
-    //insert that letter in user
-    let user = text.onScreenUser
-    user.push(char)
-
-    //add correct class to char
-    let charClass = text.classArray
-    charClass.push("correct")
-
-    setText({
-      ...text,
-      onScreenGhost: ghost,
-      onScreenUser: user,
-      classArray: charClass,
-    })
-  }
-
-  function onIncorrect(char) {
-
-    //insert that letter in user
-    let user = text.onScreenUser
-    user.push(char)
-
-    //add correct class to char
-    let charClass = text.classArray
-    charClass.push("incorrect")
-
-    setText({
-      ...text,
-      onScreenUser: user,
-      classArray: charClass,
-    })
-  }
-
   function updateScore(bool) {
     if (bool) {
 
@@ -138,7 +98,7 @@ export default function TextField() {
         ...score,
         keyStrokes: {
           total: score.keyStrokes.total += 1,
-          corrected: score.keyStrokes.corrected += 1,
+          corrected: score.keyStrokes.corrected,
           mistake: score.keyStrokes.mistake,
         },
       })
@@ -152,6 +112,85 @@ export default function TextField() {
           corrected: score.keyStrokes.corrected,
           mistake: score.keyStrokes.mistake += 1,
         },
+      })
+    }
+  }
+
+  function onCorrect() {
+
+    //remove first letter from ghost on-screen
+    let ghost = text.onScreenGhost
+    let char = ghost.shift()
+
+    //insert that letter in user on-screen
+    let user = text.onScreenUser
+    user.push(char)
+
+    //add correct class to char class
+    let charClass = text.classArray
+    charClass.push("correct")
+
+    setText({
+      ...text,
+      onScreenGhost: ghost,
+      onScreenUser: user,
+      classArray: charClass,
+    })
+  }
+
+  function onIncorrect(char) {
+
+    //insert that letter in user on-screen
+    let user = text.onScreenUser
+    user.push(char)
+
+    //add incorrect class to char array
+    let charClass = text.classArray
+    charClass.push("incorrect")
+
+    setText({
+      ...text,
+      onScreenUser: user,
+      classArray: charClass,
+    })
+  }
+
+  function onBackspace() {
+    if (text.classArray[text.classArray.length - 1] === "correct") {
+
+      //remove last char from on-screen user
+      let user = text.onScreenUser
+      let lastChar = user.pop()
+
+      //add that char to onscreen ghost
+      let ghost = text.onScreenGhost
+      ghost.unshift(lastChar)
+
+      //remove last index from class array
+      let arr = text.classArray
+      arr.pop()
+
+      setText({
+        ...text,
+        classArray: arr,
+        onScreenUser: user,
+        onScreenGhost: ghost,
+      })
+
+    } else {
+
+      //remove last char from on-screen user
+      let user = text.onScreenUser
+      user.pop()
+
+      //remove last index from class array
+      let arr = text.classArray
+      arr.pop()
+
+      setText({
+        ...text,
+        classArray: arr,
+        onScreenUser: user,
       })
     }
   }
@@ -207,7 +246,7 @@ export default function TextField() {
     } else if (e.keyCode === 8) { // ===================================== CARROT <--- CARROT
 
       // Backspace
-      console.log("Backspace")
+      onBackspace()
 
     } else { // ========================================================== CARROT ---> CARROT
 
@@ -255,15 +294,16 @@ export default function TextField() {
 
 
       <div>
-        <p>total keystrokes: {score.keyStrokes.total}</p>
-        <p>corrected chars : {score.keyStrokes.corrected}</p>
-        <p>mistakes made : {score.keyStrokes.mistake}</p>
+        <p>Keystrok: {score.keyStrokes.total}</p>
+        <p>Char Cor: {score.keyStrokes.corrected}</p>
+        <p>Char Mis: {score.keyStrokes.mistake}</p>
 
-        <p>{text.original}</p>
-        <p>{text.onScreenUser}</p>
-        <p>{text.onScreenGhost}</p>
-        <p>{text.idx.wordIdx}</p>
-        <p>{text.idx.sentenceIdx}</p>
+        <p>OG: {text.original}</p>
+        <p>Cl: {text.classArray[text.classArray.length - 1]}</p>
+        <p>US: {text.onScreenUser.join("")}</p>
+        <p>GH: {text.onScreenGhost.join("")}</p>
+        <p>WI: {text.idx.wordIdx}</p>
+        <p>SI: {text.idx.sentenceIdx}</p>
       </div>
 
     </section>
