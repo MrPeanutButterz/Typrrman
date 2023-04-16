@@ -6,8 +6,9 @@ export default function TextField() {
 
   //todo add on correct
   //todo add on incorrect
-  //todo add on space
   //todo add on backspace
+  //todo add on space
+  //todo add on enter
   //todo add on ctrl backspace
 
 
@@ -61,14 +62,19 @@ export default function TextField() {
       let sentence = response.data.message
 
       const regex = /[^a-zA-Z ]/g;
-      sentence = sentence.replace(regex, "")
-      sentence = sentence + "."
+      sentence = sentence.replace(regex, "") + "."
 
       setText({
         ...text,
         original: sentence,
         words: sentence.split(" "),
         onScreenGhost: sentence.split(""),
+        onScreenUser: [],
+        classArray: [],
+        idx: {
+          wordIdx: 0,
+          sentenceIdx: 0,
+        },
       })
     } catch (error) {
       console.error(error)
@@ -82,13 +88,19 @@ export default function TextField() {
       let sentence = response.data
 
       const regex = /[^a-zA-Z ]/g;
-      sentence = sentence.replace(regex, "")
+      sentence = sentence.replace(regex, "") + "."
 
       setText({
         ...text,
         original: sentence,
         words: sentence.split(" "),
         onScreenGhost: sentence.split(""),
+        onScreenUser: [],
+        classArray: [],
+        idx: {
+          wordIdx: 0,
+          sentenceIdx: 0,
+        },
       })
     } catch (error) {
       console.error(error)
@@ -192,9 +204,11 @@ export default function TextField() {
     //remove those chars
     //add them to user on-screen
     //update char classes
+    //update score mistakes
     for (let i = 0; i <= index; i++) {
       user.push(ghost.shift())
       charClass.push("skipped")
+      updateScoreMistake(1)
     }
 
     //update state
@@ -250,6 +264,20 @@ export default function TextField() {
     }
   }
 
+  function onCtrlBackspace() {
+
+  }
+
+  function onEnter() {
+
+    if (test.api === 0) {
+      fetchTechyText()
+
+    } else if (test.api === 1) {
+      fetchWhatTheCommitText()
+
+    }
+  }
 
   function handleUserInput(e) {
 
@@ -278,6 +306,7 @@ export default function TextField() {
 
       //ctrl backspace
       console.log("ctrl backspace")
+      onCtrlBackspace()
 
     } else if (e.ctrlKey) {
 
@@ -292,13 +321,14 @@ export default function TextField() {
 
       } else {
         onIncorrectSpace()
-        updateScoreMistake(1)
       }
 
     } else if (e.keyCode === 13) { // ======================================== LINE -<>- LINE
 
       // Enter
-      console.log("Enter")
+      if (text.onScreenGhost.length === 0) {
+        onEnter()
+      }
 
     } else if (e.keyCode === 8) { // ===================================== CARROT <--- CARROT
 
