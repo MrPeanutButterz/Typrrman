@@ -27,10 +27,8 @@ export default function TextField() {
     onScreenGhost: [],
     onScreenUser: [],
     classArray: [],
-    idx: {
-      wordIdx: 0,
-      sentenceIdx: 0,
-    },
+    wordIdx: 0,
+    sentenceIdx: 0,
   })
 
   const [score, setScore] = useState({
@@ -71,12 +69,10 @@ export default function TextField() {
         onScreenGhost: sentence.split(""),
         onScreenUser: [],
         classArray: [],
-        idx: {
-          wordIdx: 0,
-          sentenceIdx: 0,
-        },
+        wordIdx: 0,
       })
-    } catch (error) {
+    } catch
+      (error) {
       console.error(error)
     }
   }
@@ -97,10 +93,7 @@ export default function TextField() {
         onScreenGhost: sentence.split(""),
         onScreenUser: [],
         classArray: [],
-        idx: {
-          wordIdx: 0,
-          sentenceIdx: 0,
-        },
+        wordIdx: 0,
       })
     } catch (error) {
       console.error(error)
@@ -143,6 +136,20 @@ export default function TextField() {
         corrected: score.keyStrokes.corrected += number,
         mistake: score.keyStrokes.mistake,
       },
+    })
+  }
+
+  function updateWordIndex(number) {
+    setText({
+      ...text,
+      wordIdx: text.wordIdx += number,
+    })
+  }
+
+  function updateSentenceIndex(number) {
+    setText({
+      ...text,
+      sentenceIdx: text.sentenceIdx += number,
     })
   }
 
@@ -266,6 +273,8 @@ export default function TextField() {
 
   function onCtrlBackspace() {
 
+    //todo next
+
   }
 
   function onEnter() {
@@ -280,7 +289,6 @@ export default function TextField() {
   }
 
   function handleUserInput(e) {
-
 
     // Handles user input based on the key pressed
 
@@ -318,9 +326,11 @@ export default function TextField() {
 
       if (text.onScreenGhost[0] === e.key) {
         onCorrectChar(1)
+        updateWordIndex(1)
 
       } else {
         onIncorrectSpace()
+        updateWordIndex(1)
       }
 
     } else if (e.keyCode === 13) { // ======================================== LINE -<>- LINE
@@ -328,6 +338,7 @@ export default function TextField() {
       // Enter
       if (text.onScreenGhost.length === 0) {
         onEnter()
+        updateSentenceIndex(1)
       }
 
     } else if (e.keyCode === 8) { // ===================================== CARROT <--- CARROT
@@ -335,11 +346,28 @@ export default function TextField() {
       // Backspace
       if (text.classArray[text.classArray.length - 1] === "correct") {
         onBackspace()
+        if (text.onScreenUser[text.onScreenUser.length - 1] === " ") {
+          updateWordIndex(-1)
+        } else if (text.onScreenUser.length === 0) {
+          setText({
+            ...text,
+            wordIdx: 0
+          })
+        }
 
       } else if (text.classArray[text.classArray.length - 1] === "incorrect"
         || text.classArray[text.classArray.length - 1] === "skipped") {
         onBackspace()
         updateScoreCorrection(1)
+
+        if (text.onScreenUser[text.onScreenUser.length - 1] === " ") {
+          updateWordIndex(-1)
+        } else if (text.onScreenUser.length === 0) {
+          setText({
+            ...text,
+            wordIdx: 0
+          })
+        }
       }
 
 
@@ -369,8 +397,8 @@ export default function TextField() {
         <p>Cl: {text.classArray[text.classArray.length - 1]}</p>
         <p>US: {text.onScreenUser.join("")}</p>
         <p>GH: {text.onScreenGhost.join("")}</p>
-        <p>WI: {text.idx.wordIdx}</p>
-        <p>SI: {text.idx.sentenceIdx}</p>
+        <p>WI: {text.wordIdx}</p>
+        <p>SI: {text.sentenceIdx}</p>
       </div>
     </>
   }
