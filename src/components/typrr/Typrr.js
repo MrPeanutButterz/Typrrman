@@ -134,7 +134,7 @@ export default function TextField() {
     })
   }
 
-  function onCorrect() {
+  function onCorrectChar() {
 
     //carrot moves forward by one
 
@@ -150,6 +150,7 @@ export default function TextField() {
     let charClass = text.classArray
     charClass.push("correct")
 
+    //update state
     setText({
       ...text,
       onScreenGhost: ghost,
@@ -158,7 +159,7 @@ export default function TextField() {
     })
   }
 
-  function onIncorrect(char) {
+  function onIncorrectChar(char) {
 
     //carrot moves forward by one
 
@@ -170,8 +171,36 @@ export default function TextField() {
     let charClass = text.classArray
     charClass.push("incorrect")
 
+    //update state
     setText({
       ...text,
+      onScreenUser: user,
+      classArray: charClass,
+    })
+  }
+
+  function onIncorrectSpace() {
+
+    //carrot moves forward by multiple
+
+    //find remaining chars until next space in ghost on-screen
+    let ghost = text.onScreenGhost
+    let user = text.onScreenUser
+    let index = ghost.indexOf(" ")
+    let charClass = text.classArray
+
+    //remove those chars
+    //add them to user on-screen
+    //update char classes
+    for (let i = 0; i <= index; i++) {
+      user.push(ghost.shift())
+      charClass.push("skipped")
+    }
+
+    //update state
+    setText({
+      ...text,
+      onScreenGhost: ghost,
       onScreenUser: user,
       classArray: charClass,
     })
@@ -181,7 +210,8 @@ export default function TextField() {
 
     //carrot moves back by one
 
-    if (text.classArray[text.classArray.length - 1] === "correct") {
+    if (text.classArray[text.classArray.length - 1] === "correct"
+      || text.classArray[text.classArray.length - 1] === "skipped") {
 
       //remove last char from on-screen user
       let user = text.onScreenUser
@@ -220,6 +250,7 @@ export default function TextField() {
     }
   }
 
+
   function handleUserInput(e) {
 
 
@@ -257,10 +288,10 @@ export default function TextField() {
       updateScoreKeystroke(1)
 
       if (text.onScreenGhost[0] === e.key) {
-        onCorrect(1)
+        onCorrectChar(1)
 
       } else {
-        onIncorrect(e.key)
+        onIncorrectSpace()
         updateScoreMistake(1)
       }
 
@@ -275,7 +306,8 @@ export default function TextField() {
       if (text.classArray[text.classArray.length - 1] === "correct") {
         onBackspace()
 
-      } else if (text.classArray[text.classArray.length - 1] === "incorrect") {
+      } else if (text.classArray[text.classArray.length - 1] === "incorrect"
+        || text.classArray[text.classArray.length - 1] === "skipped") {
         onBackspace()
         updateScoreCorrection(1)
       }
@@ -287,10 +319,10 @@ export default function TextField() {
       updateScoreKeystroke(1)
 
       if (text.onScreenGhost[0] === e.key) {
-        onCorrect()
+        onCorrectChar()
 
       } else {
-        onIncorrect(e.key)
+        onIncorrectChar(e.key)
         updateScoreMistake(1)
       }
     }

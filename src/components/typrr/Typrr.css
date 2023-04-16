@@ -66,5 +66,10 @@
 
 .incorrect {
     color: rgba(128, 128, 128, 0.62);
-    text-decoration: line-through rgba(255, 0, 0, 0.73) 2px;
+    text-decoration: underline rgba(255, 0, 0, 0.73) 2px;
+}
+
+.skipped {
+    color: rgba(128, 128, 128, 0.62);
+    text-decoration: underline rgba(255, 165, 0, 0.77) 2px;
 }
