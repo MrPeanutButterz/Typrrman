@@ -65,11 +65,11 @@
 }
 
 .incorrect {
-    color: rgba(128, 128, 128, 0.60);
-    text-decoration: underline rgba(255, 0, 0, 0.60) 2px;
+    color: rgb(189, 14, 14);
 }
 
 .skipped {
-    color: rgba(128, 128, 128, 0.60);
-    background-color: rgba(255, 0, 0, 0.20);
+    color: rgba(128, 128, 128, 0);
+    background-color: rgb(0, 0, 0);
+    border: 2px
 }
