@@ -1,10 +1,12 @@
 .text-area-container {
     width: 100vw;
+    height: 80vh;
     padding: 25px 30px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 
     font-family: monospace;
     font-size: 32px;
@@ -12,9 +14,8 @@
 
 .text-field {
     position: relative;
-    max-width: 1200px;
+    max-width: 1500px;
     padding: 25px 30px;
-
     animation: fadeIn ease-in 1s;
 }
 
@@ -31,7 +32,7 @@
     top: 0;
     left: 0;
 
-    font-size: 1px;
+    font-size: 0;
     color: transparent;
     background-color: transparent;
     width: 100%;

@@ -10,6 +10,7 @@ export default function TextField() {
   //todo add on space
   //todo add on enter
   //todo add on ctrl backspace
+  //todo add timer function
 
 
   const [test, setTest] = useState({
@@ -18,7 +19,7 @@ export default function TextField() {
     seconds: 60000,
     startTime: 0,
     finishTime: 0,
-    api: 0,
+    api: 1,
   })
 
   const [text, setText] = useState({
@@ -83,10 +84,7 @@ export default function TextField() {
     try {
 
       const response = await axios.get("https://whatthecommit.com/index.txt")
-      let sentence = response.data
-
-      const regex = /[^a-zA-Z ]/g;
-      sentence = sentence.replace(regex, "") + "."
+      let sentence = response.data + " "
 
       setText({
         ...text,
@@ -130,11 +128,17 @@ export default function TextField() {
       classArr.push("correct")
       charIndex += 1
 
+      //update keystrokes
+      updateScoreKeystroke(1, 0, 0)
+
     } else {
 
       //on un-equal key push key in user with incorrect class
       user.push(key)
       classArr.push("incorrect")
+
+      //update keystrokes
+      updateScoreKeystroke(1, 0, 1)
     }
 
     //update state
@@ -163,7 +167,10 @@ export default function TextField() {
       charIndex += 1
       wordIndex += 1
 
-    } else {
+      //update keystrokes
+      updateScoreKeystroke(1, 0, 0)
+
+    } else if (key !== text.original[text.charIdx] && text.onScreenGhost.length !== 0) {
 
       //on unequal to key find remaining chars until next space en push to user with skipped class
       let indexToNextSpace = ghost.indexOf(" ")
@@ -171,6 +178,9 @@ export default function TextField() {
         user.push(ghost.shift())
         classArr.push("skipped")
         charIndex += 1
+
+        //update keystrokes
+        updateScoreKeystroke(1, 0, 1)
       }
       wordIndex += 1
     }
@@ -194,8 +204,7 @@ export default function TextField() {
     let charIndex = text.charIdx
     let wordIndex = text.wordIdx
 
-    if (text.classArray[text.classArray.length - 1] === "correct"
-      || text.classArray[text.classArray.length - 1] === "skipped") {
+    if (text.classArray[text.classArray.length - 1] === "correct") {
 
       //previous class is correct or skipped remove last class
       //remove last character from user en push in ghost
@@ -203,12 +212,25 @@ export default function TextField() {
       classArr.pop()
       charIndex -= 1
 
-    } else {
+    } else if (text.classArray[text.classArray.length - 1] === "skipped") {
+
+      //same as correct but different keystroke count
+      ghost.unshift(user.pop())
+      classArr.pop()
+      charIndex -= 1
+
+      //update keystrokes
+      updateScoreKeystroke(0, 1, 0)
+
+    } else if (text.classArray[text.classArray.length - 1] === "incorrect") {
 
       //previous class is incorrect remove last class
       //remove last character from user
       user.pop()
       classArr.pop()
+
+      //update keystrokes
+      updateScoreKeystroke(0, 1, 0)
     }
 
     //update word index
@@ -241,18 +263,31 @@ export default function TextField() {
     }
 
     function removeLastChar() {
-      if (classArr[classArr.length - 1] === "correct" || classArr[classArr.length - 1] === "skipped") {
+      if (classArr[classArr.length - 1] === "correct") {
 
         //previous class is correct or skipped remove last class remove last character from user en push in ghost
         ghost.unshift(user.pop())
         classArr.pop()
         charIndex -= 1
 
-      } else {
+      } else if (classArr[classArr.length - 1] === "skipped") {
+
+        //same as correct but different keystroke count
+        ghost.unshift(user.pop())
+        classArr.pop()
+        charIndex -= 1
+
+        //update keystrokes
+        updateScoreKeystroke(0, 1, 0)
+
+      } else if (classArr[classArr.length - 1] === "incorrect") {
 
         //previous class is incorrect delete last class delete last character from user
         user.pop()
         classArr.pop()
+
+        //update keystrokes
+        updateScoreKeystroke(0, 1, 0)
       }
     }
 
@@ -300,17 +335,17 @@ export default function TextField() {
 
     // Handles user input based on the key pressed
 
-    // Disabled keys: F-keys, arrows, pageup pagedown, home end.
     if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115
       || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119
       || e.keyCode === 120 || e.keyCode === 121 || e.keyCode === 122 || e.keyCode === 123
       || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40
       || e.keyCode === 33 || e.keyCode === 34 || e.keyCode === 46 || e.keyCode === 35
       || e.keyCode === 36 || e.altKey || e.keyCode === 18 || e.keyCode === 20 || e.keyCode === 222
-      || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174 || e.keyCode === 175
-      || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179 || e.keyCode === 176) {
+      || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174
+      || e.keyCode === 175 || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179
+      || e.keyCode === 176 || e.keyCode === 91 || e.keyCode === 192) {
 
-      console.log("Keys are disabled")
+      // Disabled keys: F-keys, arrows, pageup pagedown, home end.
       e.preventDefault()
 
     } else if (e.ctrlKey && e.keyCode === 46) {
