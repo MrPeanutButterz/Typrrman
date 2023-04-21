@@ -52,7 +52,7 @@
 
 .ghost-character:nth-child(1) {
     animation: blink 0.8s linear infinite;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 @keyframes blink {
@@ -72,5 +72,5 @@
 .skipped {
     color: rgba(128, 128, 128, 0);
     background-color: rgb(0, 0, 0);
-    border: 2px
+    border: 1px
 }

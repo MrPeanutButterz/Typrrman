@@ -1,6 +1,7 @@
 import "./TextField.css"
 import axios from "axios";
 import React, {useEffect, useState} from "react";
+import TestResults from "../testResult/TestResult";
 
 export default function TextField() {
 
@@ -16,10 +17,10 @@ export default function TextField() {
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
-    seconds: 60000,
+    lengthInSeconds: 60000,
     startTime: 0,
     finishTime: 0,
-    api: 1,
+    api: 0,
   })
 
   const [text, setText] = useState({
@@ -39,6 +40,11 @@ export default function TextField() {
       mistake: 0,
       corrected: 0,
     },
+    words: {
+      total: 0,
+      misspelled: 0,
+      correct: 0,
+    },
     xrp: 0,
     wpm: 0,
     acc: 0,
@@ -47,10 +53,10 @@ export default function TextField() {
   useEffect(() => {
 
     if (test.api === 0 && text.original === "") {
-      fetchTechyText()
+      void fetchTechyText()
 
     } else if (test.api === 1 && text.original === "") {
-      fetchWhatTheCommitText()
+      void fetchWhatTheCommitText()
 
     }
   }, []);
@@ -59,10 +65,7 @@ export default function TextField() {
     try {
 
       const response = await axios.get("https://techy-api.vercel.app/api/json")
-      let sentence = response.data.message
-
-      const regex = /[^a-zA-Z ]/g;
-      sentence = sentence.replace(regex, "") + ". "
+      let sentence = response.data.message + ". "
 
       setText({
         ...text,
@@ -315,25 +318,28 @@ export default function TextField() {
   function onEnter() {
 
     // reset parameters en fetch new data
-    if (text.onScreenGhost.length <= 1) {
+    if (text.onScreenGhost.length <= 2) {
       if (test.api === 0) {
-        fetchTechyText()
+        void fetchTechyText()
 
       } else if (test.api === 1) {
-        fetchWhatTheCommitText()
+        void fetchWhatTheCommitText()
       }
-    }
 
-    //update state
-    setText({
-      ...text,
-      sentenceIdx: text.sentenceIdx += 1,
-    })
+      //update state
+      setText({
+        ...text,
+        sentenceIdx: text.sentenceIdx += 1,
+      })
+    }
   }
 
   function handleUserInput(e) {
 
     // Handles user input based on the key pressed
+
+    //timer
+    timer(e.timeStamp)
 
     if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115
       || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119
@@ -385,9 +391,56 @@ export default function TextField() {
     }
   }
 
-  return (
-    <section className="text-area-container">
-      <div className="text-field">
+  function timer(time) {
+
+    //handles timing of the test en calculates result
+
+    if (!test.hasStarted) {
+
+      //register start en finish time en set hasStarted true
+      setTest({
+        ...test,
+        startTime: time,
+        finishTime: time + test.lengthInSeconds,
+        hasStarted: true,
+      })
+
+    } else if (time > test.finishTime) {
+
+      const minute = 1
+
+      //calculate WPM en ACC en present to user
+
+      console.log((score.keyStrokes.total / 5) / minute)
+      console.log((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)
+
+      setScore({
+        ...score,
+        wpm: (score.keyStrokes.total / 5) / 1,
+        acc: (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100,
+      })
+
+      setTest({
+        ...test,
+        hasStarted: true,
+        completed: true,
+      })
+    }
+  }
+
+  function onScreen() {
+    return <>
+      <div>
+        <p>Keystroke: {score.keyStrokes.total}:{score.keyStrokes.mistake}:{score.keyStrokes.corrected}</p>
+        <p>CWS idx: {text.charIdx}:{text.wordIdx}:{text.sentenceIdx}</p>
+      </div>
+    </>
+  }
+
+  function theTest() {
+    return (
+      <section className="text-area-container">
+        <div className="text-field">
         <span className="text-area-user">
         {text.onScreenUser.map((letter, index) =>
           <span
@@ -396,7 +449,7 @@ export default function TextField() {
           >{letter}</span>
         )}
         </span>
-        <span className="text-area-ghost">
+          <span className="text-area-ghost">
         {text.onScreenGhost.map((letter, index) =>
           <span
             key={index}
@@ -404,15 +457,37 @@ export default function TextField() {
           >{letter}</span>
         )}
         </span>
-        <textarea
-          autoFocus
-          spellCheck="false"
-          className="text-area-input"
-          onKeyDown={(e) => {
-            handleUserInput(e)
-          }}
-        ></textarea>
-      </div>
-    </section>
-  );
+          <textarea
+            autoFocus
+            spellCheck="false"
+            className="text-area-input"
+            onKeyDown={(e) => {
+              handleUserInput(e)
+            }}
+          ></textarea>
+        </div>
+        {theResults()}
+        {onScreen()}
+      </section>
+    );
+  }
+
+  function theResults() {
+    return (
+      <>
+        <p>WPM: {(score.keyStrokes.total / 5) / 1}</p>
+        <p>ACC: {Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}%</p>
+      </>
+    )
+  }
+
+  return (
+    <>
+      {test.completed ?
+        theTest() :
+        <TestResults
+          score={score}
+        />}
+    </>
+  )
 }
