@@ -1,21 +1,21 @@
 .text-area-container {
-    width: 100%;
+    width: 100vw;
+    height: 80vh;
     padding: 25px 30px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 
     font-family: monospace;
     font-size: 32px;
-    border: 2px solid black;
 }
 
 .text-field {
     position: relative;
-    max-width: 1200px;
+    max-width: 1500px;
     padding: 25px 30px;
-
     animation: fadeIn ease-in 1s;
 }
 
@@ -39,7 +39,6 @@
     height: 100%;
 
     border: none;
-    border: 2px solid black;
     outline: 0 !important;
     -webkit-appearance: none;
     box-shadow: none !important;
@@ -53,7 +52,7 @@
 
 .ghost-character:nth-child(1) {
     animation: blink 0.8s linear infinite;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 @keyframes blink {
@@ -66,8 +65,12 @@
     color: #c9c9c9;
 }
 
-.incorrect,
+.incorrect {
+    color: rgb(189, 14, 14);
+}
+
 .skipped {
-    color: rgba(128, 128, 128, 0.62);
-    text-decoration: line-through rgba(255, 0, 0, 0.73) 2px;
+    color: rgba(128, 128, 128, 0);
+    background-color: rgb(0, 0, 0);
+    border: 1px
 }

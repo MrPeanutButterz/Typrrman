@@ -12,7 +12,7 @@ export default function UserContextProvider({ children }) {
     username: null,
     email: null,
     id: null,
-  });
+  })
 
   function register(email, username, accessToken) {
     console.log('Gebruiker is geregistreerd!');
@@ -22,7 +22,7 @@ export default function UserContextProvider({ children }) {
       isAuth: true,
       username: username,
       email: email,
-    });
+    })
 
     history.push('/signin');
   }
@@ -38,7 +38,7 @@ export default function UserContextProvider({ children }) {
       username: username,
       email: email,
       id: id,
-    });
+    })
 
     history.push('/profile');
   }
@@ -54,7 +54,7 @@ export default function UserContextProvider({ children }) {
       username: null,
       email: null,
       id: null,
-    });
+    })
 
     history.push('/');
   }

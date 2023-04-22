@@ -1,7 +1,7 @@
-import Typrr from '../components/typrr/Typrr'
+import TextField from '../components/textField/TextField'
 
 export default function Home() {
   return <>
-    <Typrr/>
+    <TextField/>
   </>
 }
