@@ -2,7 +2,6 @@ import "./NavBar.css"
 import {NavLink} from "react-router-dom";
 
 import logo from "../../assets/keyboard.png"
-import settingsIcon from "../../assets/settings.png"
 import userIcon from "../../assets/user.png"
 
 export default function NavBar() {
@@ -13,7 +12,6 @@ export default function NavBar() {
         <NavLink to="/"><h1 id="typrr">Typrr</h1></NavLink>
       </div>
       <div className="nav-right">
-        <NavLink to="/settings"><img src={settingsIcon} alt="Settings-icon" id="settings-icon"/></NavLink>
         <NavLink to="/signin"><img src={userIcon} alt="User-icon" id="user-icon"/></NavLink>
       </div>
     </nav>

@@ -1,74 +1,96 @@
-import React, { createContext, useState } from 'react';
-import {useNavigate} from "react-router-dom";
-export const UserContext = createContext({});
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { useHistory } from 'react-router-dom';
+import React, { createContext, useEffect, useState } from 'react';
 
+export const AuthContext = createContext({});
 
-export default function UserContextProvider({ children }) {
-
-  const history = useNavigate();
-
-  const [isAuth, setAuth] = useState({
+export default function AuthContextProvider({ children }) {
+  const [isAuth, toggleIsAuth] = useState({
     isAuth: false,
-    username: null,
-    email: null,
-    id: null,
-  })
+    user: null,
+    status: 'pending',
+  });
+  const history = useHistory();
 
-  function register(email, username, accessToken) {
-    console.log('Gebruiker is geregistreerd!');
+  useEffect(() => {
+    const token = localStorage.getItem('token');
 
-    setAuth({
-      ...isAuth,
-      isAuth: true,
-      username: username,
-      email: email,
-    })
+    if (token) {
+      const decoded = jwt_decode(token);
+      void fetchUserData(decoded.sub, token);
 
-    history.push('/signin');
-  }
+    } else {
+      toggleIsAuth({
+        isAuth: false,
+        user: null,
+        status: 'done',
+      });
+    }
+  }, []);
 
-  function login(email, username, id, accessToken) {
-    console.log('Gebruiker is ingelogd!');
-
-    localStorage.setItem("accessToken", accessToken)
-
-    setAuth({
-      ...isAuth,
-      isAuth: true,
-      username: username,
-      email: email,
-      id: id,
-    })
-
-    history.push('/profile');
+  function login(JWT) {
+     localStorage.setItem('token', JWT);
+    const decoded = jwt_decode(JWT);
+    void fetchUserData(decoded.sub, JWT, '/profile');
   }
 
   function logout() {
-    console.log('Gebruiker is uitgelogd!');
-
-    localStorage.clear()
-
-    setAuth({
-      ...isAuth,
+    localStorage.clear();
+    toggleIsAuth({
       isAuth: false,
-      username: null,
-      email: null,
-      id: null,
-    })
+      user: null,
+      status: 'done',
+    });
 
+    console.log('User has logged out');
     history.push('/');
   }
 
+  async function fetchUserData(id, token, redirectUrl) {
+    try {
+      const result = await axios.get(`http://localhost:3000/600/users/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toggleIsAuth({
+        ...isAuth,
+        isAuth: true,
+        user: {
+          username: result.data.username,
+          email: result.data.email,
+          id: result.data.id,
+        },
+        status: 'done',
+      });
+
+      if (redirectUrl) {
+        history.push(redirectUrl);
+      }
+
+    } catch (e) {
+      console.error(e);
+      toggleIsAuth({
+        isAuth: false,
+        user: null,
+        status: 'done',
+      });
+    }
+  }
+
   const contextData = {
-    ...isAuth,
-    register,
-    login,
-    logout,
+    isAuth: isAuth.isAuth,
+    user: isAuth.user,
+    login: login,
+    logout: logout,
   };
 
   return (
-    <UserContext.Provider value={contextData}>
-      {children}
-    </UserContext.Provider>
+    <AuthContext.Provider value={contextData}>
+      {isAuth.status === 'done' ? children : <p>Loading...</p>}
+    </AuthContext.Provider>
   );
 }
