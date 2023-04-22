@@ -2,6 +2,7 @@ import "./TextField.css"
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import TestResults from "../testResult/TestResult";
+import resetButton from "../../assets/resetBLACK.png";
 
 export default function TextField() {
 
@@ -12,7 +13,7 @@ export default function TextField() {
   //todo add on enter
   //todo add on ctrl backspace
   //todo add timer function
-
+  //todo add result page
 
   const [test, setTest] = useState({
     hasStarted: false,
@@ -40,11 +41,7 @@ export default function TextField() {
       mistake: 0,
       corrected: 0,
     },
-    words: {
-      total: 0,
-      misspelled: 0,
-      correct: 0,
-    },
+    wordsTotal: 0,
     xrp: 0,
     wpm: 0,
     acc: 0,
@@ -331,6 +328,45 @@ export default function TextField() {
         ...text,
         sentenceIdx: text.sentenceIdx += 1,
       })
+
+      setScore({
+        ...score,
+        words: {
+          total: score.wordsTotal += text.wordIdx,
+        }
+      })
+    }
+  }
+
+  function onResetButton() {
+    console.log(test.hasStarted)
+
+    setTest({
+      ...test,
+      hasStarted: false,
+      completed: false,
+      startTime: 0,
+      finishTime: 0,
+    })
+
+    setScore({
+      keyStrokes: {
+        total: 0,
+        mistake: 0,
+        corrected: 0,
+      },
+      wordsTotal: 0,
+      xrp: 0,
+      wpm: 0,
+      acc: 0,
+    })
+
+    // reset parameters en fetch new data
+    if (test.api === 0) {
+      void fetchTechyText()
+
+    } else if (test.api === 1) {
+      void fetchWhatTheCommitText()
     }
   }
 
@@ -433,6 +469,8 @@ export default function TextField() {
       <div>
         <p>Keystroke: {score.keyStrokes.total}:{score.keyStrokes.mistake}:{score.keyStrokes.corrected}</p>
         <p>CWS idx: {text.charIdx}:{text.wordIdx}:{text.sentenceIdx}</p>
+        <p>WPM: {(score.keyStrokes.total / 5) / 1}</p>
+        <p>ACC: {Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}%</p>
       </div>
     </>
   }
@@ -466,28 +504,32 @@ export default function TextField() {
             }}
           ></textarea>
         </div>
-        {theResults()}
-        {onScreen()}
       </section>
     );
   }
 
   function theResults() {
-    return (
-      <>
-        <p>WPM: {(score.keyStrokes.total / 5) / 1}</p>
-        <p>ACC: {Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}%</p>
-      </>
-    )
+    return <>
+      <TestResults
+        keystrokeTotal={score.keyStrokes.total}
+        keystrokeMisspelled={score.keyStrokes.mistake}
+        keystrokeCorrected={score.keyStrokes.corrected}
+        wordsTotal={score.wordsTotal}
+        sentenceTotal={text.sentenceIdx}
+        wpm={(score.keyStrokes.total / 5) / 1}
+        acc={Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}
+        reset={onResetButton}
+      />
+      <div className="reset-button-container">
+        <button
+          className="reset-button"
+          onClick={() => onResetButton()}
+        ><img className="reset-button-img" src={resetButton} alt=""/>
+        </button>
+      </div>
+    </>
   }
 
-  return (
-    <>
-      {test.completed ?
-        theTest() :
-        <TestResults
-          score={score}
-        />}
-    </>
-  )
+  return (<> {!test.completed ? theTest() : theResults()} </>)
+
 }
