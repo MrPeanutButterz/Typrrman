@@ -6,36 +6,41 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 100vw;
+    margin-top: 20px;
+    padding: 0 100px 0 100px;
 }
 
 .nav-left {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    margin-left: 100px;
+    gap: 5px;
 }
 
 .nav-right {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
-    gap: 10px;
-    margin-right: 25px;
-    margin-top: 10px;
+    justify-content: center;
+    gap: 5px;
+}
+
+#nav-login-text {
+    rotate: 90deg;
 }
 
 /* ==========  ==========  ========== ICONS */
 
 #typrr {
     font-family: 'VT323', monospace;
-    font-size: 46px;
+    font-size: 45px;
     color: orange;
 }
 
 #keyboard-logo {
-    height: 50px;
+    height: 45px;
 }
 
-#user-icon {
-    height: 40px;
+.nav-icon {
+    height: 45px;
 }

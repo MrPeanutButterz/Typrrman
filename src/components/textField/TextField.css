@@ -1,27 +1,12 @@
 .text-area-container {
-    width: 100vw;
-    height: 80vh;
-    padding: 25px 30px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+    max-width: 1000px;
     font-family: monospace;
     font-size: 32px;
 }
 
 .text-field {
     position: relative;
-    max-width: 1500px;
-    padding: 25px 30px;
     animation: fadeIn ease-in 1s;
-}
-
-@keyframes fadeIn {
-    0% {opacity: 0;}
-    100% {opacity: 1}
 }
 
 .text-area-input,
@@ -45,7 +30,6 @@
     resize: none;
 }
 
-
 .ghost-character {
     color: rgba(128, 128, 128, 0.62);
 }
@@ -53,12 +37,6 @@
 .ghost-character:nth-child(1) {
     animation: blink 0.8s linear infinite;
     border-radius: 1px;
-}
-
-@keyframes blink {
-    0% {background-color: transparent}
-    50% {background-color: rgb(204, 204, 204)}
-    0% {background-color: transparent}
 }
 
 .correct {
@@ -73,4 +51,15 @@
     color: rgba(128, 128, 128, 0);
     background-color: rgb(0, 0, 0);
     border: 1px
+}
+
+@keyframes blink {
+    0% {background-color: transparent}
+    50% {background-color: rgb(204, 204, 204)}
+    0% {background-color: transparent}
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1}
 }

@@ -6,22 +6,8 @@ import resetButton from "../../assets/resetBLACK.png";
 
 export default function TextField() {
 
-  //todo add on correct
-  //todo add on incorrect
-  //todo add on backspace
-  //todo add on space
-  //todo add on enter
-  //todo add on ctrl backspace
-  //todo add timer function
-  //todo add result page
-
   const [test, setTest] = useState({
-    hasStarted: false,
-    completed: false,
-    lengthInSeconds: 60000,
-    startTime: 0,
-    finishTime: 0,
-    api: 0,
+    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 0,
   })
 
   const [text, setText] = useState({
@@ -37,14 +23,8 @@ export default function TextField() {
 
   const [score, setScore] = useState({
     keyStrokes: {
-      total: 0,
-      mistake: 0,
-      corrected: 0,
-    },
-    wordsTotal: 0,
-    xrp: 0,
-    wpm: 0,
-    acc: 0,
+      total: 0, mistake: 0, corrected: 0,
+    }, wordsTotal: 0, xrp: 0, wpm: 0, acc: 0,
   })
 
   useEffect(() => {
@@ -74,8 +54,7 @@ export default function TextField() {
         charIdx: 0,
         wordIdx: 0,
       })
-    } catch
-      (error) {
+    } catch (error) {
       console.error(error)
     }
   }
@@ -105,8 +84,7 @@ export default function TextField() {
 
     //always update keystroke total
     setScore({
-      ...score,
-      keyStrokes: {
+      ...score, keyStrokes: {
         total: score.keyStrokes.total += total,
         corrected: score.keyStrokes.corrected += corrected,
         mistake: score.keyStrokes.mistake += mistake,
@@ -143,11 +121,7 @@ export default function TextField() {
 
     //update state
     setText({
-      ...text,
-      classArray: classArr,
-      onScreenUser: user,
-      onScreenGhost: ghost,
-      charIdx: charIndex,
+      ...text, classArray: classArr, onScreenUser: user, onScreenGhost: ghost, charIdx: charIndex,
     })
   }
 
@@ -187,12 +161,7 @@ export default function TextField() {
 
     //update state
     setText({
-      ...text,
-      classArray: classArr,
-      onScreenUser: user,
-      onScreenGhost: ghost,
-      charIdx: charIndex,
-      wordIdx: wordIndex,
+      ...text, classArray: classArr, onScreenUser: user, onScreenGhost: ghost, charIdx: charIndex, wordIdx: wordIndex,
     })
   }
 
@@ -240,12 +209,7 @@ export default function TextField() {
 
     //update state
     setText({
-      ...text,
-      classArray: classArr,
-      onScreenUser: user,
-      onScreenGhost: ghost,
-      charIdx: charIndex,
-      wordIdx: wordIndex,
+      ...text, classArray: classArr, onScreenUser: user, onScreenGhost: ghost, charIdx: charIndex, wordIdx: wordIndex,
     })
   }
 
@@ -303,12 +267,7 @@ export default function TextField() {
 
     //update state
     setText({
-      ...text,
-      classArray: classArr,
-      onScreenUser: user,
-      onScreenGhost: ghost,
-      charIdx: charIndex,
-      wordIdx: wordIndex,
+      ...text, classArray: classArr, onScreenUser: user, onScreenGhost: ghost, charIdx: charIndex, wordIdx: wordIndex,
     })
   }
 
@@ -325,13 +284,11 @@ export default function TextField() {
 
       //update state
       setText({
-        ...text,
-        sentenceIdx: text.sentenceIdx += 1,
+        ...text, sentenceIdx: text.sentenceIdx += 1,
       })
 
       setScore({
-        ...score,
-        words: {
+        ...score, words: {
           total: score.wordsTotal += text.wordIdx,
         }
       })
@@ -342,23 +299,13 @@ export default function TextField() {
     console.log(test.hasStarted)
 
     setTest({
-      ...test,
-      hasStarted: false,
-      completed: false,
-      startTime: 0,
-      finishTime: 0,
+      ...test, hasStarted: false, completed: false, startTime: 0, finishTime: 0,
     })
 
     setScore({
       keyStrokes: {
-        total: 0,
-        mistake: 0,
-        corrected: 0,
-      },
-      wordsTotal: 0,
-      xrp: 0,
-      wpm: 0,
-      acc: 0,
+        total: 0, mistake: 0, corrected: 0,
+      }, wordsTotal: 0, xrp: 0, wpm: 0, acc: 0,
     })
 
     // reset parameters en fetch new data
@@ -377,15 +324,7 @@ export default function TextField() {
     //timer
     timer(e.timeStamp)
 
-    if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115
-      || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119
-      || e.keyCode === 120 || e.keyCode === 121 || e.keyCode === 122 || e.keyCode === 123
-      || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40
-      || e.keyCode === 33 || e.keyCode === 34 || e.keyCode === 46 || e.keyCode === 35
-      || e.keyCode === 36 || e.altKey || e.keyCode === 18 || e.keyCode === 20 || e.keyCode === 222
-      || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174
-      || e.keyCode === 175 || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179
-      || e.keyCode === 176 || e.keyCode === 91 || e.keyCode === 192) {
+    if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115 || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119 || e.keyCode === 120 || e.keyCode === 121 || e.keyCode === 122 || e.keyCode === 123 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 33 || e.keyCode === 34 || e.keyCode === 46 || e.keyCode === 35 || e.keyCode === 36 || e.altKey || e.keyCode === 18 || e.keyCode === 20 || e.keyCode === 222 || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174 || e.keyCode === 175 || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179 || e.keyCode === 176 || e.keyCode === 91 || e.keyCode === 192) {
 
       // Disabled keys: F-keys, arrows, pageup pagedown, home end.
       e.preventDefault()
@@ -435,10 +374,7 @@ export default function TextField() {
 
       //register start en finish time en set hasStarted true
       setTest({
-        ...test,
-        startTime: time,
-        finishTime: time + test.lengthInSeconds,
-        hasStarted: true,
+        ...test, startTime: time, finishTime: time + test.lengthInSeconds, hasStarted: true,
       })
 
     } else if (time > test.finishTime) {
@@ -457,9 +393,7 @@ export default function TextField() {
       })
 
       setTest({
-        ...test,
-        hasStarted: true,
-        completed: true,
+        ...test, hasStarted: true, completed: true,
       })
     }
   }
@@ -468,22 +402,21 @@ export default function TextField() {
     return (
       <section className="text-area-container">
         <div className="text-field">
-        <span className="text-area-user">
-        {text.onScreenUser.map((letter, index) =>
-          <span
+
+          <span className="text-area-user">
+          {text.onScreenUser.map((letter, index) => <span
             key={index}
             className={text.classArray[index]}
-          >{letter}</span>
-        )}
-        </span>
+          >{letter}</span>)}
+          </span>
+
           <span className="text-area-ghost">
-        {text.onScreenGhost.map((letter, index) =>
-          <span
+          {text.onScreenGhost.map((letter, index) => <span
             key={index}
             className="ghost-character"
-          >{letter}</span>
-        )}
-        </span>
+          >{letter}</span>)}
+          </span>
+
           <textarea
             autoFocus
             spellCheck="false"
@@ -493,29 +426,30 @@ export default function TextField() {
             }}
           ></textarea>
         </div>
-      </section>
-    );
+      </section>);
   }
 
   function theResults() {
     return <>
-      <TestResults
-        keystrokeTotal={score.keyStrokes.total}
-        keystrokeMisspelled={score.keyStrokes.mistake}
-        keystrokeCorrected={score.keyStrokes.corrected}
-        wordsTotal={score.wordsTotal}
-        sentenceTotal={text.sentenceIdx}
-        wpm={(score.keyStrokes.total / 5) / 1}
-        acc={Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}
-        reset={onResetButton}
-      />
-      <div className="reset-button-container">
-        <button
-          className="reset-button"
-          onClick={() => onResetButton()}
-        ><img className="reset-button-img" src={resetButton} alt=""/>
-        </button>
-      </div>
+      <section>
+        <TestResults
+          keystrokeTotal={score.keyStrokes.total}
+          keystrokeMisspelled={score.keyStrokes.mistake}
+          keystrokeCorrected={score.keyStrokes.corrected}
+          wordsTotal={score.wordsTotal}
+          sentenceTotal={text.sentenceIdx}
+          wpm={(score.keyStrokes.total / 5) / 1}
+          acc={Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}
+          reset={onResetButton}
+        />
+        <div className="reset-button-container">
+          <button
+            className="reset-button"
+            onClick={() => onResetButton()}
+          ><img className="reset-button-img" src={resetButton} alt=""/>
+          </button>
+        </div>
+      </section>
     </>
   }
 

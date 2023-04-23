@@ -1,9 +1,7 @@
 import "./TestResult.css"
-import resetButton from "../../assets/resetBLACK.png"
 
 export default function TestResults({keystrokeTotal, keystrokeMisspelled, keystrokeCorrected, wordsTotal, sentenceTotal, wpm, acc}) {
   return <>
-    <section className="result-container">
       <div className="label">
         <div className="header">
           <h1 className="bold">Typrr Results</h1>
@@ -44,6 +42,5 @@ export default function TestResults({keystrokeTotal, keystrokeMisspelled, keystr
           accuracy in percentage. Thank u for using Typrr.
         </p>
       </div>
-    </section>
   </>
 }

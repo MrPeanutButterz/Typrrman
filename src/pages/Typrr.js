@@ -1,6 +1,6 @@
 import TextField from '../components/textField/TextField'
 
-export default function Home() {
+export default function Typrr() {
   return <>
     <TextField/>
   </>
