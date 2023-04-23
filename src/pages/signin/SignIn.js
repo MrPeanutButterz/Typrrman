@@ -1,55 +1,47 @@
-import axios from "axios";
-import React from "react";
+import "./Signin.css"
 import {useForm} from "react-hook-form";
 
-import idea from "../assets/idea.png";
-import userWhite from "../assets/user.png"
-import protectionWhite from "../assets/protection.png"
+import userWhite from "../../assets/user.png"
+import protectionWhite from "../../assets/protection.png"
+import axios from "axios";
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
 
-export default function Register() {
+export default function SignIn() {
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
+  const {login} = useContext(UserContext);
+  const {register, handleSubmit, formState: {errors},} = useForm();
 
   async function handleFormSubmit(e, data) {
-    e.preventDefault()
-    //console.log(data)
+    e.preventDefault();
     //toggleError(false);
-    //toggleLoading(true);
 
     try {
-
-      await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signup', {
+      const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
         "username": data.username,
-        "email": data.email,
-        "password": data.password,
-        "role": ["user"]
+        "password" : data.password,
       });
+      // log het resultaat in de console
+      console.log(response);
 
-      // Let op: omdat we geen axios Cancel token gebruiken zul je hier een memory-leak melding krijgen.
-      // Om te zien hoe je een cancel token implementeerd kun je de bonus-branch bekijken!
+      // geef de JWT token aan de login-functie van de context mee
+      login(response.data);
 
-      // als alles goed gegaan is, linken we door naar de login-pagina
-      //history.push('/signin');
     } catch (e) {
       console.error(e);
       //toggleError(true);
     }
-
-    //toggleLoading(false);
   }
 
   return <>
-    <>
+    <section className="outer__form">
       <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
+
         <div className="login-input-container">
-          <img src={idea} alt="icon" className="login-logos"/>
+          <img src={userWhite} alt="icon" className="login-logos"/>
           <label htmlFor="username"></label>
           <input
-            type="text"
+            type="username"
             name="username"
             className={!errors.username ? "input-box" : "input-box-error"}
             placeholder={!errors.username ? "username" : errors.username.message}
@@ -58,24 +50,6 @@ export default function Register() {
               required: {
                 value: true,
                 message: "username is required",
-              }
-            })}
-          />
-        </div>
-
-        <div className="login-input-container">
-          <img src={userWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="email"></label>
-          <input
-            type="email"
-            name="email"
-            className={!errors.email ? "input-box" : "input-box-error"}
-            placeholder={!errors.email ? "email" : errors.email.message}
-            autoComplete="email"
-            {...register("email", {
-              required: {
-                value: true,
-                message: "email is required",
               }
             })}
           />
@@ -100,7 +74,11 @@ export default function Register() {
         </div>
 
         <button className="submit-button" type="submit">Login</button>
+        <br/>
       </form>
-    </>
+    </section>
   </>
 }
+
+//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFybGllIiwiaWF0IjoxNjgyMjQ1OTE2LCJleHAiOjE2ODIzMzIzMTZ9.q4wLM6pAp5UQaaUpmKznxPKLECKRYHbOIaNy7auLAz75LnhDKJ9JXjPtQtgCpyU6MZjFemBhUBGybzDtNR_rHA
+//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFybGllIiwiaWF0IjoxNjgyMjQ1OTE2LCJleHAiOjE2ODIzMzIzMTZ9.q4wLM6pAp5UQaaUpmKznxPKLECKRYHbOIaNy7auLAz75LnhDKJ9JXjPtQtgCpyU6MZjFemBhUBGybzDtNR_rHA

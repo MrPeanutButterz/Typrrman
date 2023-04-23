@@ -5,7 +5,7 @@ import {UserContext} from "./context/UserContext";
 
 //pages
 import Home from "./pages/Home";
-import SignIn from './pages/SignIn';
+import SignIn from './pages/signin/SignIn';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
 import Page404 from './pages/Page404'

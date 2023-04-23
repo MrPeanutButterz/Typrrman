@@ -1,6 +1,7 @@
 body {
     background-color: #193838;
     color: whitesmoke;
+    height: 100vh;
 }
 
 /* Global classes */
