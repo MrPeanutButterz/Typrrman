@@ -1,7 +1,13 @@
 body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
     background-color: #193838;
     color: whitesmoke;
     height: 100vh;
+    border: 2px solid gold;
 }
 
 /* Global classes */

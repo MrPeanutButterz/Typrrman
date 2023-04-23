@@ -14,7 +14,6 @@ export default function SignIn() {
 
   async function handleFormSubmit(e, data) {
     e.preventDefault();
-    //toggleError(false);
 
     try {
       const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
@@ -24,7 +23,7 @@ export default function SignIn() {
       // log het resultaat in de console
       console.log(response);
 
-      // geef de JWT token aan de login-functie van de context mee
+      // geef de JWT-token aan de login-functie van de context mee
       login(response.data.accessToken);
 
     } catch (e) {
@@ -79,6 +78,3 @@ export default function SignIn() {
     </section>
   </>
 }
-
-//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFybGllIiwiaWF0IjoxNjgyMjQ1OTE2LCJleHAiOjE2ODIzMzIzMTZ9.q4wLM6pAp5UQaaUpmKznxPKLECKRYHbOIaNy7auLAz75LnhDKJ9JXjPtQtgCpyU6MZjFemBhUBGybzDtNR_rHA
-//eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFybGllIiwiaWF0IjoxNjgyMjQ1OTE2LCJleHAiOjE2ODIzMzIzMTZ9.q4wLM6pAp5UQaaUpmKznxPKLECKRYHbOIaNy7auLAz75LnhDKJ9JXjPtQtgCpyU6MZjFemBhUBGybzDtNR_rHA
