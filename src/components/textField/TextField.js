@@ -464,17 +464,6 @@ export default function TextField() {
     }
   }
 
-  function onScreen() {
-    return <>
-      <div>
-        <p>Keystroke: {score.keyStrokes.total}:{score.keyStrokes.mistake}:{score.keyStrokes.corrected}</p>
-        <p>CWS idx: {text.charIdx}:{text.wordIdx}:{text.sentenceIdx}</p>
-        <p>WPM: {(score.keyStrokes.total / 5) / 1}</p>
-        <p>ACC: {Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}%</p>
-      </div>
-    </>
-  }
-
   function theTest() {
     return (
       <section className="text-area-container">

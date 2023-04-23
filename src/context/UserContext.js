@@ -1,74 +1,107 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-export const UserContext = createContext({});
+import axios from "axios";
 
+export const UserContext = createContext({})
+export default function UserContextProvider({children}) {
 
-export default function UserContextProvider({ children }) {
-
-  const history = useNavigate();
-
-  const [isAuth, setAuth] = useState({
+  const [isAuth, toggleIsAuth] = useState({
     isAuth: false,
-    username: null,
-    email: null,
-    id: null,
-  })
+    user: null,
+    status: 'pending',
+  });
 
-  function register(email, username, accessToken) {
-    console.log('Gebruiker is geregistreerd!');
+  const navigate = useNavigate()
 
-    setAuth({
-      ...isAuth,
-      isAuth: true,
-      username: username,
-      email: email,
-    })
+  useEffect(() => {
 
-    history.push('/signin');
-  }
+    //get JWT-token
+    const token = localStorage.getItem('token')
 
-  function login(email, username, id, accessToken) {
-    console.log('Gebruiker is ingelogd!');
+    if (token) {
+      //if JWT get user data
+      void fetchUserData(token)
 
-    localStorage.setItem("accessToken", accessToken)
+    } else {
+      //status done en continue
+      toggleIsAuth({
+        isAuth: false,
+        user: null,
+        status: 'done',
+      });
+    }
+  }, [])
 
-    setAuth({
-      ...isAuth,
-      isAuth: true,
-      username: username,
-      email: email,
-      id: id,
-    })
+  function login(token) {
+    //push JWT in storage
+    localStorage.setItem('token', token)
+    //const decoded = jwt_decode(data.accessToken);
 
-    history.push('/profile');
+    //fetch user data
+    void fetchUserData(token, '/')
   }
 
   function logout() {
-    console.log('Gebruiker is uitgelogd!');
-
-    localStorage.clear()
-
-    setAuth({
-      ...isAuth,
+    localStorage.clear();
+    toggleIsAuth({
       isAuth: false,
-      username: null,
-      email: null,
-      id: null,
-    })
+      user: null,
+      status: 'done',
+    });
 
-    history.push('/');
+    console.log('Gebruiker is uitgelogd!');
+    navigate('/');
+  }
+
+  async function fetchUserData(JWT, redirectUrl) {
+    try {
+      //get user data with JWT
+      const result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      });
+
+      //push user data in state
+      toggleIsAuth({
+        ...isAuth,
+        isAuth: true,
+        user: {
+          username: result.data.username,
+          email: result.data.email,
+          id: result.data.id,
+        },
+        status: 'done',
+      });
+
+      //form login go to home page
+      if (redirectUrl) {
+        navigate(redirectUrl)
+      }
+
+    } catch (e) {
+      console.error(e);
+
+      //status done en continue
+      toggleIsAuth({
+        isAuth: false,
+        user: null,
+        status: 'done',
+      });
+    }
   }
 
   const contextData = {
-    ...isAuth,
-    register,
-    login,
-    logout,
+    isAuth: isAuth.isAuth,
+    user: isAuth.user,
+    login: login,
+    logout: logout,
   };
 
   return (
     <UserContext.Provider value={contextData}>
-      {children}
+      {isAuth.status === 'done' ? children : <p>Loading...</p>}
     </UserContext.Provider>
   );
 }
