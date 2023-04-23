@@ -1,16 +1,24 @@
-body {
+main {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
     background-color: #193838;
     color: whitesmoke;
-    height: 100vh;
-    border: 2px solid gold;
 }
 
 /* Global classes */
+
+.default {
+    --primary: #F4F7F5;
+    --secondary: #575A5E;
+    --background: #193838;
+    --error: #FF7F11;
+
+    background-color: var(--background);
+    color: var(--primary);
+}
 
 .whiteBlack {
     --primary: #08090A;

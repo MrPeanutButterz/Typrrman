@@ -4,9 +4,9 @@ import {Route, Routes} from "react-router-dom";
 import {UserContext} from "./context/UserContext";
 
 //pages
-import Home from "./pages/Home";
-import SignIn from './pages/signin/SignIn';
-import SignUp from './pages/SignUp';
+import Typrr from "./pages/Typrr";
+import SignIn from './pages/signForm/SignIn';
+import SignUp from './pages/signForm/SignUp';
 import Profile from './pages/Profile';
 import Page404 from './pages/Page404'
 
@@ -19,14 +19,17 @@ export default function App() {
 
   return (
     <>
-      <NavBar/>
+      <main>
+        <NavBar/>
         <Routes>
-          <Route exact path="/" element={<Home/>}></Route>
+          <Route exact path="/" element={<Typrr/>}></Route>
           <Route path="/signin" element={<SignIn/>}></Route>
           <Route path="/signup" element={<SignUp/>}></Route>
-          <Route path="/profile" element={isAuth ? <Profile/> : <Home/>}></Route>
+          <Route path="/profile" element={isAuth ? <Profile/> : <Typrr/>}></Route>
           <Route path="*" element={<Page404/>}></Route>
         </Routes>
+        <footer>Made by Charlie</footer>
+      </main>
     </>
   );
 }

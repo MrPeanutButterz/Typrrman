@@ -2,9 +2,9 @@ import axios from "axios";
 import React from "react";
 import {useForm} from "react-hook-form";
 
-import idea from "../assets/idea.png";
-import userWhite from "../assets/user.png"
-import protectionWhite from "../assets/protection.png"
+import idea from "../../assets/idea.png";
+import userWhite from "../../assets/user.png"
+import protectionWhite from "../../assets/protection.png"
 
 export default function Register() {
 
@@ -33,7 +33,7 @@ export default function Register() {
       // Om te zien hoe je een cancel token implementeerd kun je de bonus-branch bekijken!
 
       // als alles goed gegaan is, linken we door naar de login-pagina
-      //history.push('/signin');
+      //history.push('/signForm');
     } catch (e) {
       console.error(e);
       //toggleError(true);
@@ -99,7 +99,8 @@ export default function Register() {
           />
         </div>
 
-        <button className="submit-button" type="submit">Login</button>
+        <button className="submit-button" type="submit">Register</button>
+        <p>Login here</p>
       </form>
     </>
   </>

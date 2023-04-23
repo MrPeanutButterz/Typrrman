@@ -1,15 +1,5 @@
-.result-container {
-    width: 100vw;
-    height: 80vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn ease-in 1s;
-}
-
 .label {
+    animation: fadeIn ease-in 1s;
     border: 2px solid black;
     width: 270px;
     margin: 20px auto;
