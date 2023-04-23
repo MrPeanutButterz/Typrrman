@@ -25,7 +25,7 @@ export default function SignIn() {
       console.log(response);
 
       // geef de JWT token aan de login-functie van de context mee
-      login(response.data);
+      login(response.data.accessToken);
 
     } catch (e) {
       console.error(e);

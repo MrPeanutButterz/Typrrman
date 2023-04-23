@@ -4,10 +4,10 @@ import {useContext} from "react";
 
 export default function Home() {
 
-  const {user} = useContext(UserContext);
+  const {isAuth, user} = useContext(UserContext);
 
   return <>
-    <p>{user.username}</p>
+    {isAuth ? <p>{user.username}</p> : <p>Hello Stranger</p>}
     <TextField/>
   </>
 }
