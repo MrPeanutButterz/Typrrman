@@ -7,8 +7,8 @@ import {UserContext} from "./context/UserContext";
 import Typrr from "./pages/Typrr";
 import SignIn from './pages/signForm/SignIn';
 import SignUp from './pages/signForm/SignUp';
-import Profile from './pages/Profile';
-import Page404 from './pages/Page404'
+import Profile from './pages/profile/Profile';
+import Page404 from './pages/pageNotFound/Page404'
 
 //components
 import NavBar from "./components/navigation/NavBar";

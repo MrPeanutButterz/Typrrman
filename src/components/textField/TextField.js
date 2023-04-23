@@ -7,7 +7,7 @@ import resetButton from "../../assets/resetBLACK.png";
 export default function TextField() {
 
   const [test, setTest] = useState({
-    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 0,
+    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 1,
   })
 
   const [text, setText] = useState({
@@ -439,7 +439,7 @@ export default function TextField() {
           wordsTotal={score.wordsTotal}
           sentenceTotal={text.sentenceIdx}
           wpm={(score.keyStrokes.total / 5) / 1}
-          acc={Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}
+          acc={((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100).toPrecision(4)}
           reset={onResetButton}
         />
         <div className="reset-button-container">
@@ -454,5 +454,4 @@ export default function TextField() {
   }
 
   return (<> {!test.completed ? theTest() : theResults()} </>)
-
 }

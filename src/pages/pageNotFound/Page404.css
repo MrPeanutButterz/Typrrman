@@ -1,0 +1,32 @@
+.page-not-found {
+    display: flex;
+    flex-direction: row;
+}
+
+.page-not-found > h1 {
+    font-size: 80px;
+    color: whitesmoke;
+}
+
+#separator {
+    background-color: orange;
+    height: 100%;
+    width: 2px;
+    margin: 0 15px;
+}
+
+.quote-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: whitesmoke;
+
+}
+
+.quote-container > q {
+
+}
+
+.quote-container > i {
+
+}

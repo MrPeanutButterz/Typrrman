@@ -19,7 +19,7 @@ export default function NavBar() {
       </div>
       {isAuth ?
         <div className="nav-right">
-          <p>Hi, {capitalizeFirstLetter(user.username)}</p>
+          <h3>Hi, {capitalizeFirstLetter(user.username)}</h3>
           <NavLink to="/profile"><img src={userIcon} alt="User-icon" className="nav-icon"/></NavLink>
         </div> :
         <div className="nav-right">
