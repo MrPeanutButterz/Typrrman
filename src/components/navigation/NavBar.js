@@ -5,7 +5,7 @@ import logo from "../../assets/keyboard.png"
 import userIcon from "../../assets/user.png"
 import loginIcon from "../../assets/039-login.png"
 import {UserContext} from "../../context/UserContext";
-import capitalizeFirstLetter from "../helperFunctions/capitalizeFirstLetter"
+import capitalizeFirstLetter from "../helpers/capitalizeFirstLetter"
 
 export default function NavBar() {
 
@@ -23,7 +23,7 @@ export default function NavBar() {
           <NavLink to="/profile"><img src={userIcon} alt="User-icon" className="nav-icon"/></NavLink>
         </div> :
         <div className="nav-right">
-          <h1 id="typrr">Login</h1>
+          <h3>Login</h3>
           <NavLink to="/signin"><img src={loginIcon} alt="User-icon" className="nav-icon"/></NavLink>
         </div>}
     </nav>

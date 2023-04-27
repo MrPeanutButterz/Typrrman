@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-/* ==========  ==========  ========== LAYOUT */
-
 nav {
     display: flex;
     flex-direction: row;
@@ -25,8 +23,8 @@ nav {
     gap: 5px;
 }
 
-#nav-login-text {
-    rotate: 90deg;
+.nav-right > h3 {
+    margin-top: 9px;
 }
 
 /* ==========  ==========  ========== ICONS */

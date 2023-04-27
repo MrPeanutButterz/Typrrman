@@ -1,7 +1,7 @@
 import "./Profile.css"
 import {useContext, useState} from "react";
 import {UserContext} from "../../context/UserContext";
-import capitalizeFirstLetter from "../../components/helperFunctions/capitalizeFirstLetter";
+import capitalizeFirstLetter from "../../components/helpers/capitalizeFirstLetter";
 import {NavLink} from "react-router-dom";
 import axios from "axios";
 
@@ -22,6 +22,7 @@ export default function Profile() {
           Authorization: `Bearer ${JWT}`,
         },
       });
+      //push to state
       setScore(response.data.info)
     } catch (e) {
       console.error(e);
@@ -29,24 +30,20 @@ export default function Profile() {
   }
 
   return <>
-    <section className="profile-container-out">
-      <div className="profile-container-in">
+    <section className="profile-wrapper">
+      <div className="profile-container">
         <div className="profile">
           <h1>{capitalizeFirstLetter(user.username)}</h1>
           <h3>{user.email}</h3>
-          <span><NavLink to="/changePassword"><p id="change">change password</p></NavLink></span>
-          <span><NavLink to="/changeEmail"><p id="change">change email</p></NavLink></span>
+          <br/>
+          <span><NavLink to="/changePassword"><p className="change-detail">change password</p></NavLink></span>
+          <span><NavLink to="/changeEmail"><p className="change-detail">change email</p></NavLink></span>
+          <button className="logout" onClick={logout}>logout</button>
         </div>
-        <div className="info">
-          <h1>Average Wpm: {score}</h1>
+        <div id="separator"></div>
+        <div className="info-container">
+          <h1>Average wpm: {score}</h1>
         </div>
-      </div>
-      <div className="button-container-in">
-        <button
-          className="button-logout"
-          onClick={logout}
-        >logout
-        </button>
       </div>
     </section>
   </>

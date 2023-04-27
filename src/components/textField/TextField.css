@@ -1,5 +1,5 @@
 .text-area-container {
-    max-width: 1000px;
+    max-width: 1200px;
     font-family: monospace;
     font-size: 32px;
 }
@@ -39,26 +39,26 @@
 }
 
 .correct {
-    color: #c9c9c9;
+    color: var(--primary);
 }
 
 .incorrect {
-    color: rgb(189, 14, 14);
+    color: var(--error);
 }
 
 .skipped {
-    color: rgba(128, 128, 128, 0);
-    background-color: rgb(0, 0, 0);
+    background-color: var(--error);
     border: 1px
 }
 
 @keyframes blink {
     0% {background-color: transparent}
-    50% {background-color: rgb(204, 204, 204)}
+    25% {background-color: var(--primary)}
+    75% {background-color: var(--primary)}
     0% {background-color: transparent}
 }
 
 @keyframes fadeIn {
-    0% {opacity: 0;}
-    100% {opacity: 1}
+    from {opacity: 0}
+    to {opacity: 1}
 }

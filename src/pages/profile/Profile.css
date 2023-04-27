@@ -1,32 +1,30 @@
-.profile-container-out {
+.profile-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
-.profile-container-in,
-.button-container-in {
-    width: 1000px;
+.profile-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 10px;
+    gap: 30px;
 }
 
-.profile {
-    border-right: 2px solid orange;
-    padding-right: 20px;
+#separator {
+    background-color: var(--secondary);
+    height: 100%;
+    width: 3px;
 }
 
-.button-logout {
-    height: 35px;
-    width: 75px;
-    background-color: orange;
-    border-style: none;
-    cursor: pointer;
+.logout {
+    background-color: transparent;
+    width: fit-content;
+    color: var(--primary);
+    font-size: 16px;
 }
 
-#change {
-    color: orange;
+.change-detail {
+    color: var(--secondary);
 }

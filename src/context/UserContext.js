@@ -1,4 +1,4 @@
-import checkJWTTokenExp from "../components/helperFunctions/checkJWTTokenExp";
+import checkJWTTokenExp from "../components/helpers/checkJWTTokenExp";
 import React, {createContext, useEffect, useState} from 'react';
 import Loading from "../pages/loading/Loading"
 import {useNavigate} from "react-router-dom";
@@ -23,7 +23,6 @@ export default function UserContextProvider({children}) {
     if (token) {
       //if JWT get user data
       void fetchUserData(token)
-
     } else {
       //status done en continue
       setUser({
@@ -39,13 +38,15 @@ export default function UserContextProvider({children}) {
     localStorage.setItem('token', token)
 
     if (checkJWTTokenExp(token)) {
-    //fetch user data
+    //fetch user data if JWT valid
     void fetchUserData(token, '/')
     }
   }
 
   function logout() {
+    //clear local storage
     localStorage.clear();
+    //set user
     setUser({
       isAuth: false,
       user: null,
@@ -78,7 +79,7 @@ export default function UserContextProvider({children}) {
         status: 'done',
       });
 
-      //form login go to home page
+      //from form login go to home page
       if (redirectUrl) {
         navigate(redirectUrl)
       }
@@ -95,6 +96,7 @@ export default function UserContextProvider({children}) {
     }
   }
 
+  //send the package
   const contextData = {
     isAuth: user.isAuth,
     user: user.user,
