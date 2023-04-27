@@ -11,8 +11,7 @@ export default function TestResults({keystrokeTotal, keystrokeMisspelled, keystr
 
         <div className="divider lg"></div>
         <div className="calories-info">
-          <p className="bold sm-text">Experience</p>
-          <h1>Amount<span className="right">+score</span></h1>
+          <h1>Experience</h1>
         </div>
 
         <div className="divider md"></div>

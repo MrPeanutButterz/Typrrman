@@ -383,8 +383,8 @@ export default function TextField() {
 
       //calculate WPM en ACC en present to user
 
-      console.log((score.keyStrokes.total / 5) / minute)
-      console.log((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)
+      //console.log((score.keyStrokes.total / 5) / minute)
+      //console.log((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)
 
       setScore({
         ...score,

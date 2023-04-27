@@ -1,10 +1,38 @@
 import "./Profile.css"
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
+import capitalizeFirstLetter from "../../components/helperFunctions/capitalizeFirstLetter";
 
 export default function Profile() {
+
+  const {user, logout} = useContext(UserContext);
+  console.log(user)
+
   return <>
-    <div className="profile-container">
-      <h1>change</h1>
-      <h1>Profile</h1>
-    </div>
+    <section className="profile-container-out">
+      <div className="profile-container-in">
+
+        <div className="profile">
+          <h1>{capitalizeFirstLetter(user.username)}</h1>
+          <h3>{user.email}</h3>
+        </div>
+        <div className="info">
+          <h1>WPM</h1>
+          <h1>ACC</h1>
+        </div>
+      </div>
+      <div className="button-container-in">
+        <button
+          className="button-logout"
+          onClick={logout}
+        >Change Password
+        </button>
+        <button
+          className="button-logout"
+          onClick={logout}
+        >logout
+        </button>
+      </div>
+    </section>
   </>
 }

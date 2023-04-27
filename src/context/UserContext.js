@@ -1,4 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
+import Loading from "../pages/loading/Loading"
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -49,7 +50,6 @@ export default function UserContextProvider({children}) {
       status: 'done',
     });
 
-    console.log('Gebruiker is uitgelogd!');
     navigate('/');
   }
 
@@ -101,7 +101,7 @@ export default function UserContextProvider({children}) {
 
   return (
     <UserContext.Provider value={contextData}>
-      {isAuth.status === 'done' ? children : <p>Loading...</p>}
+      {isAuth.status === 'done' ? children : <Loading />}
     </UserContext.Provider>
   );
 }

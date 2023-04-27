@@ -1,12 +1,17 @@
 import axios from "axios";
-import React from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 
 import idea from "../../assets/idea.png";
 import userWhite from "../../assets/user.png"
 import protectionWhite from "../../assets/protection.png"
+import {NavLink, useNavigate} from "react-router-dom";
 
 export default function Register() {
+
+  const navigate = useNavigate()
+
+  const [message, setMessage] = useState(null)
 
   const {
     register,
@@ -34,17 +39,19 @@ export default function Register() {
 
       // als alles goed gegaan is, linken we door naar de login-pagina
       //history.push('/signForm');
+      navigate("/signin")
+
     } catch (e) {
       console.error(e);
-      //toggleError(true);
+      setMessage(e.response.data.message)
     }
 
-    //toggleLoading(false);
   }
 
   return <>
     <>
       <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
+        <h3 className="error-message">{message}</h3>
         <div className="login-input-container">
           <img src={idea} alt="icon" className="login-logos"/>
           <label htmlFor="username"></label>
@@ -100,7 +107,7 @@ export default function Register() {
         </div>
 
         <button className="submit-button" type="submit">Register</button>
-        <p>Login here</p>
+        <NavLink to="/signin"><p className="register-login">Login here</p></NavLink>
       </form>
     </>
   </>

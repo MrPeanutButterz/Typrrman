@@ -6,6 +6,8 @@ import protectionWhite from "../../assets/protection.png"
 import axios from "axios";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
+import loginIcon from "../../assets/039-login.png";
+import {NavLink} from "react-router-dom";
 
 export default function SignIn() {
 
@@ -72,7 +74,7 @@ export default function SignIn() {
       </div>
 
       <button className="submit-button" type="submit">Login</button>
-      <p>Register here</p>
+      <NavLink to="/signup"><p className="register-login">Register here</p></NavLink>
     </form>
   </>
 }
