@@ -1,3 +1,4 @@
+import checkJWTTokenExp from "../components/helperFunctions/checkJWTTokenExp";
 import React, {createContext, useEffect, useState} from 'react';
 import Loading from "../pages/loading/Loading"
 import {useNavigate} from "react-router-dom";
@@ -36,10 +37,11 @@ export default function UserContextProvider({children}) {
   function login(token) {
     //push JWT in storage
     localStorage.setItem('token', token)
-    //const decoded = jwt_decode(data.accessToken);
 
+    if (checkJWTTokenExp(token)) {
     //fetch user data
     void fetchUserData(token, '/')
+    }
   }
 
   function logout() {
