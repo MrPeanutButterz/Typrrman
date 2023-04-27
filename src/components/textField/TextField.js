@@ -12,7 +12,7 @@ export default function TextField() {
 
 
   const [test, setTest] = useState({
-    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 1,
+    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 0,
   })
 
   const [text, setText] = useState({
@@ -82,6 +82,50 @@ export default function TextField() {
       })
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  async function uploadWPM(wpm) {
+
+    //get JWT-token
+    const JWT = localStorage.getItem('token')
+    let result = 0
+
+    try {
+      //get user data with JWT
+      result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
+    let avrWpm
+
+    if (result.data.info === undefined) {
+      avrWpm = 0
+    } else {
+      avrWpm = parseInt(result.data.info)
+    }
+
+    const newScore = Math.round(avrWpm + wpm) / 2
+
+    if (JWT) {
+      try {
+        await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
+          "info": newScore,
+        },{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -394,7 +438,7 @@ export default function TextField() {
       })
 
       setTest({...test, hasStarted: true, completed: true,})
-      uploadScore(wpm)
+      void uploadWPM(wpm)
     }
   }
 

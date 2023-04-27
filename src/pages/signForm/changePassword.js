@@ -3,13 +3,13 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 
 import protectionWhite from "../../assets/protection.png"
-import {NavLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function ChangePassword() {
 
   const navigate = useNavigate()
-
   const [message, setMessage] = useState(null)
+  const JWT = localStorage.getItem('token')
 
   const {
     register,
@@ -20,20 +20,24 @@ export default function ChangePassword() {
   async function handleFormSubmit(e, data) {
     e.preventDefault()
 
-    try {
-
-      await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signup', {
-        "username": data.username,
-        "email": data.email,
-        "password": data.password,
-        "info": "0",
-        "role": ["user"],
-      });
-
-
-    } catch (e) {
-      console.error(e);
-      setMessage(e.response.data.message)
+    if (data.newPwd === data.repeatPwd) {
+      try {
+        await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
+          "password": data.newPwd,
+          "repeatedPassword": data.repeatPwd,
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        });
+        navigate("/")
+      } catch (e) {
+        console.error(e);
+        setMessage(e.response.data.message)
+      }
+    } else {
+      setMessage("New password is not the same")
     }
 
   }
@@ -45,31 +49,14 @@ export default function ChangePassword() {
 
         <div className="login-input-container">
           <img src={protectionWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="password"></label>
+          <label htmlFor="newPwd"></label>
           <input
             type="password"
-            name="password"
-            className={!errors.password ? "input-box" : "input-box-error"}
-            placeholder={!errors.password ? "old password" : errors.password.message}
-            autoComplete="current-password"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "old password is required"
-              }
-            })}
-          />
-        </div>
-        <div className="login-input-container">
-          <img src={protectionWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="password"></label>
-          <input
-            type="password"
-            name="password"
+            name="newPwd"
             className={!errors.password ? "input-box" : "input-box-error"}
             placeholder={!errors.password ? "new password" : errors.password.message}
-            autoComplete="new-password"
-            {...register("password", {
+            autoComplete="newPwd"
+            {...register("newPwd", {
               required: {
                 value: true,
                 message: "new password is required"
@@ -80,14 +67,14 @@ export default function ChangePassword() {
 
         <div className="login-input-container">
           <img src={protectionWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="password"></label>
+          <label htmlFor="repeatPwd"></label>
           <input
             type="password"
-            name="password"
+            name="repeatPwd"
             className={!errors.password ? "input-box" : "input-box-error"}
             placeholder={!errors.password ? "repeat new password" : errors.password.message}
-            autoComplete="current-password"
-            {...register("password", {
+            autoComplete="repeatPwd"
+            {...register("repeatPwd", {
               required: {
                 value: true,
                 message: "repeat new password is required"
@@ -96,8 +83,7 @@ export default function ChangePassword() {
           />
         </div>
 
-        <button className="submit-button" type="submit">Register</button>
-        <NavLink to="/signin"><p className="register-login">Login here</p></NavLink>
+        <button className="submit-button" type="submit">Change password</button>
       </form>
     </>
   </>
