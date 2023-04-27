@@ -6,7 +6,7 @@ import axios from "axios";
 export const UserContext = createContext({})
 export default function UserContextProvider({children}) {
 
-  const [isAuth, toggleIsAuth] = useState({
+  const [user, setUser] = useState({
     isAuth: false,
     user: null,
     status: 'pending',
@@ -25,7 +25,7 @@ export default function UserContextProvider({children}) {
 
     } else {
       //status done en continue
-      toggleIsAuth({
+      setUser({
         isAuth: false,
         user: null,
         status: 'done',
@@ -44,13 +44,60 @@ export default function UserContextProvider({children}) {
 
   function logout() {
     localStorage.clear();
-    toggleIsAuth({
+    setUser({
       isAuth: false,
       user: null,
       status: 'done',
     });
 
     navigate('/');
+  }
+
+  async function uploadScore(score) {
+
+    //get JWT-token
+    const JWT = localStorage.getItem('token')
+    let result = 0
+
+    try {
+      //get user data with JWT
+      result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
+    let avrScore;
+
+    if (result.data.info === undefined) {
+      avrScore = 0
+    } else {
+      avrScore = parseInt(result.data.info)
+    }
+
+
+    const newScore = Math.round(avrScore + score / 2)
+
+    if (JWT) {
+      try {
+        await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
+          "info": newScore,
+        },{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        });
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
   }
 
   async function fetchUserData(JWT, redirectUrl) {
@@ -63,14 +110,17 @@ export default function UserContextProvider({children}) {
         },
       });
 
+      console.log(result)
+
       //push user data in state
-      toggleIsAuth({
-        ...isAuth,
+      setUser({
+        ...user,
         isAuth: true,
         user: {
           username: result.data.username,
           email: result.data.email,
           id: result.data.id,
+          info: result.data.info,
         },
         status: 'done',
       });
@@ -84,7 +134,7 @@ export default function UserContextProvider({children}) {
       console.error(e);
 
       //status done en continue
-      toggleIsAuth({
+      setUser({
         isAuth: false,
         user: null,
         status: 'done',
@@ -93,15 +143,16 @@ export default function UserContextProvider({children}) {
   }
 
   const contextData = {
-    isAuth: isAuth.isAuth,
-    user: isAuth.user,
+    isAuth: user.isAuth,
+    user: user.user,
     login: login,
     logout: logout,
+    uploadScore: uploadScore,
   };
 
   return (
     <UserContext.Provider value={contextData}>
-      {isAuth.status === 'done' ? children : <Loading />}
+      {user.status === 'done' ? children : <Loading/>}
     </UserContext.Provider>
   );
 }

@@ -1,13 +1,18 @@
 import "./TextField.css"
 import axios from "axios";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import TestResults from "../testResult/TestResult";
 import resetButton from "../../assets/resetBLACK.png";
+import {UserContext} from "../../context/UserContext";
+
 
 export default function TextField() {
 
+  const {uploadScore} = useContext(UserContext);
+
+
   const [test, setTest] = useState({
-    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 1,
+    hasStarted: false, completed: false, lengthInSeconds: 20000, startTime: 0, finishTime: 0, api: 1,
   })
 
   const [text, setText] = useState({
@@ -296,7 +301,6 @@ export default function TextField() {
   }
 
   function onResetButton() {
-    console.log(test.hasStarted)
 
     setTest({
       ...test, hasStarted: false, completed: false, startTime: 0, finishTime: 0,
@@ -380,6 +384,7 @@ export default function TextField() {
     } else if (time > test.finishTime) {
 
       const minute = 1
+      const wpm = (score.keyStrokes.total / 5) / 1
 
       //calculate WPM en ACC en present to user
 
@@ -388,13 +393,15 @@ export default function TextField() {
 
       setScore({
         ...score,
-        wpm: (score.keyStrokes.total / 5) / 1,
+        wpm: wpm,
         acc: (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100,
       })
 
       setTest({
         ...test, hasStarted: true, completed: true,
       })
+
+      uploadScore(wpm)
     }
   }
 

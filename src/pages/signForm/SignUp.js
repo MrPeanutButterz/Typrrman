@@ -21,9 +21,6 @@ export default function Register() {
 
   async function handleFormSubmit(e, data) {
     e.preventDefault()
-    //console.log(data)
-    //toggleError(false);
-    //toggleLoading(true);
 
     try {
 
@@ -31,7 +28,8 @@ export default function Register() {
         "username": data.username,
         "email": data.email,
         "password": data.password,
-        "role": ["user"]
+        "info": "0",
+        "role": ["user"],
       });
 
       // Let op: omdat we geen axios Cancel token gebruiken zul je hier een memory-leak melding krijgen.

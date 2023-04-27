@@ -17,8 +17,7 @@ export default function Profile() {
           <h3>{user.email}</h3>
         </div>
         <div className="info">
-          <h1>WPM</h1>
-          <h1>ACC</h1>
+          <h1>Average Wpm: {user.info}</h1>
         </div>
       </div>
       <div className="button-container-in">
