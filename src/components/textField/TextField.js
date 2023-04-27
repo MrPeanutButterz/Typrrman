@@ -1,10 +1,15 @@
 import "./TextField.css"
 import axios from "axios";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import TestResults from "../testResult/TestResult";
 import resetButton from "../../assets/resetBLACK.png";
+import {UserContext} from "../../context/UserContext";
+
 
 export default function TextField() {
+
+  const {uploadScore} = useContext(UserContext);
+
 
   const [test, setTest] = useState({
     hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 0,
@@ -77,6 +82,50 @@ export default function TextField() {
       })
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  async function uploadWPM(wpm) {
+
+    //get JWT-token
+    const JWT = localStorage.getItem('token')
+    let result = 0
+
+    try {
+      //get user data with JWT
+      result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
+    let avrWpm
+
+    if (result.data.info === undefined) {
+      avrWpm = 0
+    } else {
+      avrWpm = parseInt(result.data.info)
+    }
+
+    const newScore = Math.round(avrWpm + wpm) / 2
+
+    if (JWT) {
+      try {
+        await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
+          "info": newScore,
+        },{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -296,7 +345,6 @@ export default function TextField() {
   }
 
   function onResetButton() {
-    console.log(test.hasStarted)
 
     setTest({
       ...test, hasStarted: false, completed: false, startTime: 0, finishTime: 0,
@@ -380,21 +428,17 @@ export default function TextField() {
     } else if (time > test.finishTime) {
 
       const minute = 1
-
-      //calculate WPM en ACC en present to user
-
-      console.log((score.keyStrokes.total / 5) / minute)
-      console.log((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)
+      const wpm = (score.keyStrokes.total / 5) / 1
+      const acc = (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100
 
       setScore({
         ...score,
-        wpm: (score.keyStrokes.total / 5) / 1,
-        acc: (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100,
+        wpm: wpm,
+        acc: acc,
       })
 
-      setTest({
-        ...test, hasStarted: true, completed: true,
-      })
+      setTest({...test, hasStarted: true, completed: true,})
+      void uploadWPM(wpm)
     }
   }
 
@@ -439,7 +483,7 @@ export default function TextField() {
           wordsTotal={score.wordsTotal}
           sentenceTotal={text.sentenceIdx}
           wpm={(score.keyStrokes.total / 5) / 1}
-          acc={Math.round((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)}
+          acc={((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100).toPrecision(4)}
           reset={onResetButton}
         />
         <div className="reset-button-container">
@@ -454,5 +498,4 @@ export default function TextField() {
   }
 
   return (<> {!test.completed ? theTest() : theResults()} </>)
-
 }

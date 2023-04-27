@@ -1,11 +1,13 @@
+import checkJWTTokenExp from "../components/helperFunctions/checkJWTTokenExp";
 import React, {createContext, useEffect, useState} from 'react';
+import Loading from "../pages/loading/Loading"
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export const UserContext = createContext({})
 export default function UserContextProvider({children}) {
 
-  const [isAuth, toggleIsAuth] = useState({
+  const [user, setUser] = useState({
     isAuth: false,
     user: null,
     status: 'pending',
@@ -24,7 +26,7 @@ export default function UserContextProvider({children}) {
 
     } else {
       //status done en continue
-      toggleIsAuth({
+      setUser({
         isAuth: false,
         user: null,
         status: 'done',
@@ -35,21 +37,21 @@ export default function UserContextProvider({children}) {
   function login(token) {
     //push JWT in storage
     localStorage.setItem('token', token)
-    //const decoded = jwt_decode(data.accessToken);
 
+    if (checkJWTTokenExp(token)) {
     //fetch user data
     void fetchUserData(token, '/')
+    }
   }
 
   function logout() {
     localStorage.clear();
-    toggleIsAuth({
+    setUser({
       isAuth: false,
       user: null,
       status: 'done',
     });
 
-    console.log('Gebruiker is uitgelogd!');
     navigate('/');
   }
 
@@ -64,13 +66,14 @@ export default function UserContextProvider({children}) {
       });
 
       //push user data in state
-      toggleIsAuth({
-        ...isAuth,
+      setUser({
+        ...user,
         isAuth: true,
         user: {
           username: result.data.username,
           email: result.data.email,
           id: result.data.id,
+          info: result.data.info,
         },
         status: 'done',
       });
@@ -84,7 +87,7 @@ export default function UserContextProvider({children}) {
       console.error(e);
 
       //status done en continue
-      toggleIsAuth({
+      setUser({
         isAuth: false,
         user: null,
         status: 'done',
@@ -93,15 +96,15 @@ export default function UserContextProvider({children}) {
   }
 
   const contextData = {
-    isAuth: isAuth.isAuth,
-    user: isAuth.user,
+    isAuth: user.isAuth,
+    user: user.user,
     login: login,
     logout: logout,
   };
 
   return (
     <UserContext.Provider value={contextData}>
-      {isAuth.status === 'done' ? children : <p>Loading...</p>}
+      {user.status === 'done' ? children : <Loading/>}
     </UserContext.Provider>
   );
 }

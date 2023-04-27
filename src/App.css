@@ -1,70 +1,14 @@
 main {
+    --primary: #F4F7F5;
+    --secondary: #FF7F11;
+    --background: #193838;
+    --error: #FF5E5B;
+
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background-color: #193838;
-    color: whitesmoke;
-}
-
-/* Global classes */
-
-.default {
-    --primary: #F4F7F5;
-    --secondary: #575A5E;
-    --background: #193838;
-    --error: #FF7F11;
-
-    background-color: var(--background);
-    color: var(--primary);
-}
-
-.whiteBlack {
-    --primary: #08090A;
-    --secondary: #575A5E;
-    --background: #F4F7F5;
-    --error: #FF7F11;
-
-    background-color: var(--background);
-    color: var(--primary);
-}
-
-.blackWhite {
-    --primary: #F4F7F5;
-    --secondary: #A7A2A9;
-    --background: #08090A;
-    --error: #FF7F11;
-
-    background-color: var(--background);
-    color: var(--primary);
-}
-
-.grayCitroen {
-    --primary: #00CECB;
-    --secondary: #165756;
-    --background: #FFFFEA;
-    --error: #FF5E5B;
-
-    background-color: var(--background);
-    color: var(--primary);
-}
-
-.outerSpace-aquamarine {
-    --primary: #F2F4F3;
-    --secondary: #A9927D;
-    --background: #21211b;
-    --error: #49111C;
-
-    background-color: var(--background);
-    color: var(--primary);
-}
-
-.jet-bitterSweet {
-    --primary: #00A7E1;
-    --secondary: #EDDEA4;
-    --background: #D9E5D6;
-    --error: #F7A072;
 
     background-color: var(--background);
     color: var(--primary);

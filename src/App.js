@@ -7,8 +7,10 @@ import {UserContext} from "./context/UserContext";
 import Typrr from "./pages/Typrr";
 import SignIn from './pages/signForm/SignIn';
 import SignUp from './pages/signForm/SignUp';
-import Profile from './pages/Profile';
-import Page404 from './pages/Page404'
+import ChangePassword from './pages/signForm/changePassword';
+import ChangeEmail from './pages/signForm/changeEmail';
+import Profile from './pages/profile/Profile';
+import Page404 from './pages/pageNotFound/Page404'
 
 //components
 import NavBar from "./components/navigation/NavBar";
@@ -25,10 +27,12 @@ export default function App() {
           <Route exact path="/" element={<Typrr/>}></Route>
           <Route path="/signin" element={<SignIn/>}></Route>
           <Route path="/signup" element={<SignUp/>}></Route>
+          <Route path="/changepassword" element={<ChangePassword/>}></Route>
+          <Route path="/changeemail" element={<ChangeEmail/>}></Route>
           <Route path="/profile" element={isAuth ? <Profile/> : <Typrr/>}></Route>
           <Route path="*" element={<Page404/>}></Route>
         </Routes>
-        <footer>Made by Charlie</footer>
+        <footer><a href="https://www.novi.nl/" target="_blank">NOVI Eindopdracht</a></footer>
       </main>
     </>
   );
