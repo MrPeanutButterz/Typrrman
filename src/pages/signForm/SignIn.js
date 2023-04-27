@@ -16,20 +16,18 @@ export default function SignIn() {
   async function handleFormSubmit(e, data) {
     e.preventDefault();
 
+    //post login
     try {
       const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
         "username": data.username,
         "password": data.password,
       });
-      // log het resultaat in de console
-      console.log(response);
 
-      // geef de JWT-token aan de login-functie van de context mee
+      //set user context with JWT token
       login(response.data.accessToken);
 
     } catch (e) {
       console.error(e);
-      //toggleError(true);
     }
   }
 
