@@ -53,7 +53,7 @@ export default function UserContextProvider({children}) {
     navigate('/');
   }
 
-  async function uploadScore(score) {
+  async function uploadScore(wpm) {
 
     //get JWT-token
     const JWT = localStorage.getItem('token')
@@ -71,16 +71,17 @@ export default function UserContextProvider({children}) {
       console.error(e);
     }
 
-    let avrScore;
+    let avrWpm
 
     if (result.data.info === undefined) {
-      avrScore = 0
-    } else {
-      avrScore = parseInt(result.data.info)
+      avrWpm = 0
+
+     } else {
+
+      avrWpm = parseInt(result.data.info)
     }
 
-
-    const newScore = Math.round(avrScore + score / 2)
+    const newScore = Math.round(avrWpm + wpm) / 2
 
     if (JWT) {
       try {
@@ -109,8 +110,6 @@ export default function UserContextProvider({children}) {
           Authorization: `Bearer ${JWT}`,
         },
       });
-
-      console.log(result)
 
       //push user data in state
       setUser({

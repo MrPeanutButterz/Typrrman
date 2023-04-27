@@ -12,7 +12,7 @@ export default function TextField() {
 
 
   const [test, setTest] = useState({
-    hasStarted: false, completed: false, lengthInSeconds: 20000, startTime: 0, finishTime: 0, api: 1,
+    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 1,
   })
 
   const [text, setText] = useState({
@@ -385,22 +385,15 @@ export default function TextField() {
 
       const minute = 1
       const wpm = (score.keyStrokes.total / 5) / 1
-
-      //calculate WPM en ACC en present to user
-
-      //console.log((score.keyStrokes.total / 5) / minute)
-      //console.log((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100)
+      const acc = (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100
 
       setScore({
         ...score,
         wpm: wpm,
-        acc: (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100,
+        acc: acc,
       })
 
-      setTest({
-        ...test, hasStarted: true, completed: true,
-      })
-
+      setTest({...test, hasStarted: true, completed: true,})
       uploadScore(wpm)
     }
   }
