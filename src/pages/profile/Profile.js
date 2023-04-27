@@ -13,6 +13,7 @@ export default function Profile() {
   void getScore()
   async function getScore() {
     const JWT = localStorage.getItem('token')
+
     try {
       //get user data with JWT
       const response = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
@@ -30,19 +31,17 @@ export default function Profile() {
   return <>
     <section className="profile-container-out">
       <div className="profile-container-in">
-
         <div className="profile">
           <h1>{capitalizeFirstLetter(user.username)}</h1>
           <h3>{user.email}</h3>
-          <span><NavLink to="/changePassword"><p id="change-pwd">change password</p></NavLink></span>
-          <span><NavLink to="/changeEmail"><p id="change-mail">change email</p></NavLink></span>
+          <span><NavLink to="/changePassword"><p id="change">change password</p></NavLink></span>
+          <span><NavLink to="/changeEmail"><p id="change">change email</p></NavLink></span>
         </div>
         <div className="info">
           <h1>Average Wpm: {score}</h1>
         </div>
       </div>
       <div className="button-container-in">
-
         <button
           className="button-logout"
           onClick={logout}
