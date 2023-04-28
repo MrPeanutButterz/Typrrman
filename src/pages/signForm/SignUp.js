@@ -5,8 +5,8 @@ import axios from 'axios';
 
 export default function SignUp() {
 
-  const [details, setDetails] = useState({email: "", username: "", password: "", rememberMe: false})
-  const [error, toggleError] = useState({email: true, username: true, password: false})
+  const [details, setDetails] = useState({email: "", username: "", password: ""})
+  const [error, toggleError] = useState({email: false, username: false, password: false})
 
   // we maken een canceltoken aan voor ons netwerk-request
   const source = axios.CancelToken.source();
@@ -20,11 +20,7 @@ export default function SignUp() {
   }, []);
 
   async function handleSubmit(e) {
-
-    console.log(details)
     e.preventDefault()
-
-
 
     if (details.password.length >= 6) {
       try {
@@ -38,9 +34,10 @@ export default function SignUp() {
           cancelToken: source.token,
         });
 
-        //navigate.push('/signin');
+        navigate.push('/signin');
       } catch (e) {
         console.error(e);
+        toggleError({...error, email: true})
       }
     } else {
       toggleError({...error, password: true})
@@ -104,18 +101,9 @@ export default function SignUp() {
             <div>{error.password && <p className="error">Passwords must contain 6 characters.</p>}</div>
           </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="remember"
-              className="remember"
-              onChange={() => setDetails({...details, rememberMe: !details.rememberMe})}
-            /> Remember me
-          </label>
-
           <button
             type="submit"
-            className="form-button"
+            className="form-button form-button-space"
           >Register
           </button>
 

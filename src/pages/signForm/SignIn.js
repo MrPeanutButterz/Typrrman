@@ -1,81 +1,115 @@
 import "./Form.css"
-import {useForm} from "react-hook-form";
-
-import userWhite from "../../assets/user.png"
-import protectionWhite from "../../assets/protection.png"
 import axios from "axios";
+import {useEffect} from "react";
 import {useContext} from "react";
-import {UserContext} from "../../context/UserContext";
-import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
+import {NavLink} from "react-router-dom";
+import {UserContext} from "../../context/UserContext";
 
 export default function SignIn() {
 
   const {login} = useContext(UserContext);
-  const {register, handleSubmit, formState: {errors},} = useForm();
-  const [message, setMessage] = useState("")
 
+  const [details, setDetails] = useState({username: "", password: "", rememberMe: false})
+  const [error, toggleError] = useState({username: false, password: false})
 
-  async function handleFormSubmit(e, data) {
-    e.preventDefault();
+  // we maken een canceltoken aan voor ons netwerk-request
+  const source = axios.CancelToken.source();
 
-    //post login
-    try {
-      const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
-        "username": data.username,
-        "password": data.password,
-      });
+  // mocht onze pagina ge-unmount worden voor we klaar zijn met data ophalen, abort het request
+  useEffect(() => {
+    return function cleanup() {
+      source.cancel();
+    }
+  }, []);
 
-      //set user context with JWT token
-      login(response.data.accessToken);
+  async function handleSubmit(e) {
+    e.preventDefault()
 
-    } catch (e) {
-      console.error(e);
+    if (details.password.length >= 6) {
+      try {
+        const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
+          "username": details.username,
+          "password": details.password,
+        }, {
+          cancelToken: source.token,
+        });
+
+        //set user context with JWT token
+        login(response.data.accessToken, details.rememberMe);
+
+      } catch (e) {
+        console.error(e);
+        toggleError({...error, username: true})
+      }
+    } else {
+      toggleError({...error, password: true})
     }
   }
 
-  return <>
-    <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
-      <h3 className="error-message">{message}</h3>
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="form-container">
 
-      <div className="login-input-container">
-        <img src={userWhite} alt="icon" className="login-logos"/>
-        <label htmlFor="username"></label>
-        <input
-          type="username"
-          name="username"
-          className={!errors.username ? "input-box" : "input-box-error"}
-          placeholder={!errors.username ? "username" : errors.username.message}
-          autoComplete="username"
-          {...register("username", {
-            required: {
-              value: true,
-              message: "username is required",
-            }
-          })}
-        />
-      </div>
+          <h1>Sign In</h1><span>Please fill in this form to login your account.</span>
+          <br/>
 
-      <div className="login-input-container">
-        <img src={protectionWhite} alt="icon" className="login-logos"/>
-        <label htmlFor="password"></label>
-        <input
-          type="password"
-          name="password"
-          className={!errors.password ? "input-box" : "input-box-error"}
-          placeholder={!errors.password ? "password" : errors.password.message}
-          autoComplete="current-password"
-          {...register("password", {
-            required: {
-              value: true,
-              message: "password is required"
-            }
-          })}
-        />
-      </div>
+          <label htmlFor="username-field">
+            <input
+              type="text"
+              id="username-field"
+              name="username"
+              autoComplete="username"
+              value={details.username}
+              placeholder="username"
+              onChange={(e) => {
+                setDetails({...details, username: e.target.value})
+                toggleError({...error, username: false})
+              }}
 
-      <button className="submit-button" type="submit">Login</button>
-      <NavLink to="/signup"><p className="register-login">Register here</p></NavLink>
-    </form>
-  </>
+            />
+            <div>{error.username && <p className="error">This is unknown account.</p>}</div>
+          </label>
+
+          <label htmlFor="password-field">
+            <input
+              type="password"
+              id="password-field"
+              name="password"
+              autoComplete="current-password"
+              value={details.password}
+              placeholder="password"
+              onChange={(e) => {
+                setDetails({...details, password: e.target.value})
+                toggleError({...error, password: false})
+              }}
+            />
+            <div>{error.password && <p className="error">Passwords must contain 6 characters.</p>}</div>
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="remember"
+              className="remember"
+              onChange={() => setDetails({...details, rememberMe: !details.rememberMe})}
+            /> Remember me
+          </label>
+
+          <button
+            type="submit"
+            className="form-button"
+          >Login
+          </button>
+
+          <div className="link-container">
+            <NavLink to="/signup"><p>Do you don't have an account? You
+              can <span>sign up</span> here.</p></NavLink>
+          </div>
+
+        </div>
+      </form>
+    </>
+  );
 }

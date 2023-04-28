@@ -1,10 +1,9 @@
 .form-container {
-    max-width: 500px;
-    padding: 16px;
-    border: 1px solid orange;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid var(--secondary);
 }
 
-/* Full-width input fields */
 input[type=text],
 input[type=password],
 input[type=email] {
@@ -13,7 +12,7 @@ input[type=email] {
     margin-top: 20px;
     display: inline-block;
     border: none;
-    background: #f1f1f1;
+    background: var(--primary);
 }
 
 input[type=text]:focus,
@@ -23,11 +22,9 @@ input[type=password]:focus {
     outline: none;
 }
 
-
-/* Set a style for all buttons */
 .form-button {
     background-color: var(--secondary);
-    color: white;
+    color: var(--primary);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -44,20 +41,24 @@ input[type=password]:focus {
     opacity:1;
 }
 
+.form-button-space {
+    margin-top: 20px;
+}
+
 .link-container {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    color: whitesmoke;
+    color: var(--primary);
 }
 
 .link-container p {
-    color: whitesmoke;
+    color: var(--primary);
 }
 
 .link-container span {
-    color: orange;
+    color: var(--secondary);
 }
 
 .error {

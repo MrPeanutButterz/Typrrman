@@ -33,13 +33,15 @@ export default function UserContextProvider({children}) {
     }
   }, [])
 
-  function login(token) {
+  function login(token, remember) {
     //push JWT in storage
-    localStorage.setItem('token', token)
+    if (remember) {
+      localStorage.setItem('token', token)
+    }
 
     if (checkJWTTokenExp(token)) {
-    //fetch user data if JWT valid
-    void fetchUserData(token, '/')
+      //fetch user data if JWT valid
+      void fetchUserData(token, '/')
     }
   }
 
