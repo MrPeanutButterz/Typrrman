@@ -1,4 +1,4 @@
-import "./SignForm.css"
+import "./Form.css"
 import {useForm} from "react-hook-form";
 
 import userWhite from "../../assets/user.png"
