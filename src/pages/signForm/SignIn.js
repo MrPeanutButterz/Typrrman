@@ -7,11 +7,14 @@ import axios from "axios";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
 import {NavLink} from "react-router-dom";
+import React, {useState} from "react";
 
 export default function SignIn() {
 
   const {login} = useContext(UserContext);
   const {register, handleSubmit, formState: {errors},} = useForm();
+  const [message, setMessage] = useState("")
+
 
   async function handleFormSubmit(e, data) {
     e.preventDefault();
@@ -33,6 +36,7 @@ export default function SignIn() {
 
   return <>
     <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
+      <h3 className="error-message">{message}</h3>
 
       <div className="login-input-container">
         <img src={userWhite} alt="icon" className="login-logos"/>

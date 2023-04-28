@@ -2,7 +2,7 @@ import "./TextField.css"
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import TestResults from "../testResult/TestResult";
-import resetButton from "../../assets/resetBLACK.png";
+import resetButton from "../../assets/reset.png";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
 

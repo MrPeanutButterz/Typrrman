@@ -1,3 +1,17 @@
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-button {
+    width: 80px;
+}
+
+
+/*
 form {
     display: flex;
     flex-direction: column;
@@ -5,15 +19,6 @@ form {
     justify-content: center;
     gap: 10px;
     animation: fadeIn ease-in 0.5s;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 
 .login-input-container {
@@ -35,11 +40,11 @@ form {
     padding-left: 5px;
     border: 0;
     outline: none;
-    background-color: whitesmoke;
+    background-color: var(--primary);
 }
 
 .input-box-error::placeholder {
-    color: whitesmoke;
+    color: var(--primary);
 }
 
 .input-box-error,
@@ -49,8 +54,8 @@ form {
     height: 30px;
     width: 300px;
     padding-left: 5px;
-    background-color: #c54f4f;
-    color: whitesmoke;
+    background-color: var(--error);
+    color: var(--primary);
     outline: none;
 }
 
@@ -59,15 +64,15 @@ form {
 }
 
 .submit-button {
-    background-color: orange;
+    background-color: var(--secondary);
 }
 
 .register-login {
-    color: whitesmoke;
+    color: var(--primary);
 }
 
 .error-message {
-    color: red;
+    color: var(--error);
 }
 
 button {
@@ -76,3 +81,12 @@ button {
     border-style: none;
     cursor: pointer;
 }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}*/

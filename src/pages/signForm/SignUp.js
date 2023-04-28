@@ -1,112 +1,114 @@
-import axios from "axios";
-import React, {useState} from "react";
-import {useForm} from "react-hook-form";
+import React, {useEffect, useState} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
-import idea from "../../assets/idea.png";
-import userWhite from "../../assets/user.png"
-import protectionWhite from "../../assets/protection.png"
-import {NavLink, useNavigate} from "react-router-dom";
+export default function SignUp() {
 
-export default function Register() {
+  const [details, setDetails] = useState({email: "", username: "", password: ""})
+  const [error, toggleError] = useState({email: false, username: false, password: false})
 
-  const navigate = useNavigate()
+  //const [error, toggleError] = useState(false);
+  const [loading, toggleLoading] = useState(false);
 
-  const [message, setMessage] = useState(null)
+  // we maken een canceltoken aan voor ons netwerk-request
+  const source = axios.CancelToken.source();
+  const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
+  // mocht onze pagina ge-unmount worden voor we klaar zijn met data ophalen, abort het request
+  useEffect(() => {
+    return function cleanup() {
+      source.cancel();
+    }
+  }, []);
 
-  async function handleFormSubmit(e, data) {
-    e.preventDefault()
+  async function handleSubmit(e) {
+
+    console.log(details)
+
+    e.preventDefault();
+    toggleError(false);
+    toggleLoading(true);
 
     try {
-
-      await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signup', {
-        "username": data.username,
-        "email": data.email,
-        "password": data.password,
-        "info": "0",
-        "role": ["user"],
-      });
-
-      // Let op: omdat we geen axios Cancel token gebruiken zul je hier een memory-leak melding krijgen.
-      // Om te zien hoe je een cancel token implementeerd kun je de bonus-branch bekijken!
+      /*await axios.post('http://localhost:3000/register', {
+        email: email,
+        password: password,
+        username: username,
+      }, {
+        cancelToken: source.token,
+      });*/
 
       // als alles goed gegaan is, linken we door naar de login-pagina
-      //history.push('/signForm');
-      navigate("/signin")
-
+      //navigate.push('/signin');
     } catch (e) {
       console.error(e);
-      setMessage(e.response.data.message)
+      toggleError(true);
     }
 
+    toggleLoading(false);
   }
 
-  return <>
+  return (
     <>
-      <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
-        <h3 className="error-message">{message}</h3>
-        <div className="login-input-container">
-          <img src={idea} alt="icon" className="login-logos"/>
-          <label htmlFor="username"></label>
-          <input
-            type="text"
-            name="username"
-            className={!errors.username ? "input-box" : "input-box-error"}
-            placeholder={!errors.username ? "username" : errors.username.message}
-            autoComplete="username"
-            {...register("username", {
-              required: {
-                value: true,
-                message: "username is required",
-              }
-            })}
-          />
-        </div>
 
-        <div className="login-input-container">
-          <img src={userWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="email"></label>
+
+      <form onSubmit={handleSubmit} className="signup-form">
+        <h1>Register</h1>
+
+        <label htmlFor="email-field">
           <input
             type="email"
+            id="email-field"
             name="email"
-            className={!errors.email ? "input-box" : "input-box-error"}
-            placeholder={!errors.email ? "email" : errors.email.message}
             autoComplete="email"
-            {...register("email", {
-              required: {
-                value: true,
-                message: "email is required",
-              }
-            })}
+            value={details.email}
+            placeholder="email"
+            onChange={(e) =>
+              setDetails({...details, email: e.target.value})}
           />
-        </div>
+          {error.email && <p className="error">This account already exists.</p>}
+        </label>
 
-        <div className="login-input-container">
-          <img src={protectionWhite} alt="icon" className="login-logos"/>
-          <label htmlFor="password"></label>
+        <label htmlFor="username-field">
+          <input
+            type="text"
+            id="username-field"
+            name="username"
+            autoComplete="username"
+            value={details.username}
+            placeholder="username"
+            onChange={(e) =>
+              setDetails({...details, username: e.target.value})}
+          />
+          {error.username && <p className="error">This username already exists.</p>}
+        </label>
+
+        <label htmlFor="password-field">
           <input
             type="password"
+            id="password-field"
             name="password"
-            className={!errors.password ? "input-box" : "input-box-error"}
-            placeholder={!errors.password ? "password" : errors.password.message}
             autoComplete="current-password"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "password is required"
-              }
-            })}
+            value={details.password}
+            placeholder="password"
+            onChange={(e) =>
+              setDetails({...details, password: e.target.value})}
           />
-        </div>
+          {error.password && <p className="error">Passwords must contain 6 characters.</p>}
+        </label>
 
-        <button className="submit-button" type="submit">Register</button>
-        <NavLink to="/signin"><p className="register-login">Login here</p></NavLink>
+
+        <button
+          type="submit"
+          className="form-button"
+          disabled={loading}
+        >Register
+        </button>
+
+      <NavLink to="/signin"><p className="register-login">Do you already have an account? You can <span>sign in</span> here.</p></NavLink>
+
+
       </form>
     </>
-  </>
+  );
 }
