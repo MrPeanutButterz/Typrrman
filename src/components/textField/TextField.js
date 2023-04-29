@@ -106,8 +106,8 @@ export default function TextField() {
     //get score with api request
 
     //get JWT-token
-    const JWT = localStorage.getItem('token')
-    let result = 0
+    let JWT = localStorage.getItem('token')
+    let result
 
     try {
       //get user data with JWT
@@ -387,46 +387,36 @@ export default function TextField() {
   function handleUserInput(e) {
 
     // Handles user input based on the key pressed
-
     if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115 || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119 || e.keyCode === 120 || e.keyCode === 121 || e.keyCode === 122 || e.keyCode === 123 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 33 || e.keyCode === 34 || e.keyCode === 46 || e.keyCode === 35 || e.keyCode === 36 || e.altKey || e.keyCode === 18 || e.keyCode === 20 || e.keyCode === 222 || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174 || e.keyCode === 175 || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179 || e.keyCode === 176 || e.keyCode === 91 || e.keyCode === 192) {
-
       // Disabled keys: F-keys, arrows, pageup pagedown, home end.
       e.preventDefault()
 
     } else if (e.ctrlKey && e.keyCode === 46) {
-
       // Control Del
       e.preventDefault()
 
     } else if (e.keyCode === 8 && e.ctrlKey) { // ============================ WORD <--- WORD
-
       //ctrl backspace
       onMultipleCharacterBackwards()
 
     } else if (e.ctrlKey) {
-
       //catch key ctrl to prevent the word "control" input in text.user
 
     } else if (e.keyCode === 32) { // ======================================== WORD ---> WORD
-
       // Space bar
       onSpaceBar(e.key)
 
     } else if (e.keyCode === 13) { // ======================================== LINE -<>- LINE
-
       // Enter
       onEnter()
 
     } else if (e.keyCode === 8) { // ===================================== CARROT <--- CARROT
-
       // Backspace
       onCharacterBackwards()
 
     } else { // ========================================================== CARROT ---> CARROT
-
       // Letter
       onCharacterForwards(e.key)
-
     }
   }
 

@@ -1,5 +1,5 @@
 import "./Profile.css"
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../context/UserContext";
 import capitalizeFirstLetter from "../../components/helpers/capitalizeFirstLetter";
 import {NavLink} from "react-router-dom";
@@ -10,8 +10,13 @@ export default function Profile() {
   const {user, logout} = useContext(UserContext);
   const [score, setScore] = useState(0)
 
-  void getScore()
+  useEffect(() => {
+    void getScore()
+  }, [])
+
+
   async function getScore() {
+
     const JWT = localStorage.getItem('token')
 
     try {
@@ -24,6 +29,7 @@ export default function Profile() {
       });
       //push to state
       setScore(response.data.info)
+      console.log(response)
     } catch (e) {
       console.error(e);
     }

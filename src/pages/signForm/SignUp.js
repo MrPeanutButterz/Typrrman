@@ -5,13 +5,19 @@ import {NavLink, useNavigate} from 'react-router-dom';
 import checkUsername from "../../components/helpers/checkUserName";
 import checkEmail from "../../components/helpers/checkEmail";
 
-
 export default function SignUp() {
 
   const [details, setDetails] = useState({email: "", username: "", password: ""})
-  const [error, toggleError] = useState({email: false, username: false, password: false, accountExists: false})
+  const [error, toggleError] = useState({
+    emailInvalid: false,
+    usernameInvalid: false,
+    passwordInvalid: false,
+    accountExists: false,
+    usernameInUse: false,
+    emailInUse: false,
+  })
 
-  // we maken een canceltoken aan voor ons netwerk-request
+  // we maken een cancel-token aan voor ons netwerk-request
   const source = axios.CancelToken.source();
   const navigate = useNavigate();
 
@@ -26,13 +32,13 @@ export default function SignUp() {
     e.preventDefault()
 
     if (!checkEmail(details.email)) {
-      toggleError({...error, email: true})
+      toggleError({...error, emailInvalid: true})
 
     } else if (!checkUsername(details.username)) {
-      toggleError({...error, username: true})
+      toggleError({...error, usernameInvalid: true})
 
     } else if (details.password.length < 6) {
-      toggleError({...error, password: true})
+      toggleError({...error, passwordInvalid: true})
 
     } else {
       try {
@@ -46,10 +52,22 @@ export default function SignUp() {
           cancelToken: source.token,
         });
 
-        navigate.push('/signin');
+        navigate('/signin');
       } catch (e) {
         console.error(e);
-        toggleError({...error, accountExists: true})
+
+        if (e.response.status === 400) {
+
+          console.log(e.response.data.message)
+
+          if (e.response.data.message === "This email is already in use") {
+            toggleError({...error, emailInUse: true})
+          }
+
+          if (e.response.data.message === "This username is already in use") {
+            toggleError({...error, usernameInUse: true})
+          }
+        }
       }
     }
   }
@@ -62,26 +80,6 @@ export default function SignUp() {
           <h1>Sign Up</h1>
           <p>Please fill in this form to create an account.</p>
 
-          <label htmlFor="email-field">
-            <input
-              type="email"
-              id="email-field"
-              name="email"
-              className="input-field"
-              autoComplete="email"
-              value={details.email}
-              placeholder="email"
-              onChange={(e) => {
-                setDetails({...details, email: e.target.value})
-                toggleError({...error, email: false})
-              }}
-            />
-            <div className="error-message-container">
-              {error.accountExists && <p className="error-message">This account already exists.</p>}
-              {error.email && <p className="error-message">This email doesn't seem right.</p>}
-            </div>
-          </label>
-
           <label htmlFor="username-field">
             <input
               type="text"
@@ -93,12 +91,33 @@ export default function SignUp() {
               placeholder="username"
               onChange={(e) => {
                 setDetails({...details, username: e.target.value})
-                toggleError({...error, username: false})
+                toggleError({...error, usernameInvalid: false, usernameInUse: false})
               }}
-
             />
-            <div className="error-message-container">{error.username &&
-              <p className="error-message">Username may only contain character en numbers.</p>}</div>
+            <div className="error-message-container">
+              {error.username && <p className="error-message">Username may only contain numbers & character.</p>}
+              {error.usernameInUse && <p className="error-message">This username is already in use.</p>}
+            </div>
+          </label>
+
+          <label htmlFor="email-field">
+            <input
+              type="email"
+              id="email-field"
+              name="email"
+              className="input-field"
+              autoComplete="email"
+              value={details.email}
+              placeholder="email"
+              onChange={(e) => {
+                setDetails({...details, email: e.target.value})
+                toggleError({...error, emailInvalid: false, emailInUse: false})
+              }}
+            />
+            <div className="error-message-container">
+              {error.email && <p className="error-message">This email doesn't seem right.</p>}
+              {error.emailInUse && <p className="error-message">This email is already in use.</p>}
+            </div>
           </label>
 
           <label htmlFor="password-field">
@@ -112,7 +131,7 @@ export default function SignUp() {
               placeholder="password"
               onChange={(e) => {
                 setDetails({...details, password: e.target.value})
-                toggleError({...error, password: false})
+                toggleError({...error, passwordInvalid: false})
               }}
             />
             <div className="error-message-container">{error.password &&
@@ -126,8 +145,7 @@ export default function SignUp() {
           </button>
 
           <div className="link-container">
-            <NavLink to="/signin"><p>Do you already have an account? You
-              can <span>sign in</span> here.</p></NavLink>
+            <NavLink to="/signin"><p>Already got an account? <span>Sign in</span> here.</p></NavLink>
           </div>
 
         </div>

@@ -10,7 +10,7 @@ export default function SignIn() {
 
   const {login} = useContext(UserContext);
 
-  const [details, setDetails] = useState({username: "", password: "", rememberMe: false})
+  const [details, setDetails] = useState({username: "", password: ""})
   const [error, toggleError] = useState({username: false, password: false})
 
   // we maken een canceltoken aan voor ons netwerk-request
@@ -35,7 +35,7 @@ export default function SignIn() {
       });
 
       //set user context with JWT token
-      login(response.data.accessToken, details.rememberMe);
+      login(response.data.accessToken);
 
     } catch (e) {
       console.error(e);
@@ -88,15 +88,6 @@ export default function SignIn() {
               <p className="error-message">Invalid password.</p>}</div>
           </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="remember"
-              className="remember-checkbox"
-              onChange={() => setDetails({...details, rememberMe: !details.rememberMe})}
-            /> Remember me
-          </label>
-
           <button
             type="submit"
             className="form-button"
@@ -104,8 +95,7 @@ export default function SignIn() {
           </button>
 
           <div className="link-container">
-            <NavLink to="/signup"><p>Do you don't have an account? You
-              can <span>sign up</span> here.</p></NavLink>
+            <NavLink to="/signup"><p>Don't have an account? <span>Sign up</span> here.</p></NavLink>
           </div>
 
         </div>
