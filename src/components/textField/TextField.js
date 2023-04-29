@@ -1,18 +1,23 @@
 import "./TextField.css"
 import axios from "axios";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import TestResults from "../testResult/TestResult";
-import resetButton from "../../assets/resetBLACK.png";
+import resetButton from "../../assets/reset.png";
+import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
 
 
 export default function TextField() {
 
-  const {uploadScore} = useContext(UserContext);
-
+  const {isAuth} = useContext(UserContext);
 
   const [test, setTest] = useState({
-    hasStarted: false, completed: false, lengthInSeconds: 60000, startTime: 0, finishTime: 0, api: 0,
+    hasStarted: false,
+    completed: false,
+    lengthInSeconds: 60000,
+    startTime: 0,
+    finishTime: 0,
+    api: 1,
   })
 
   const [text, setText] = useState({
@@ -29,10 +34,17 @@ export default function TextField() {
   const [score, setScore] = useState({
     keyStrokes: {
       total: 0, mistake: 0, corrected: 0,
-    }, wordsTotal: 0, xrp: 0, wpm: 0, acc: 0,
+    },
+    wordsTotal: 0,
+    xrp: 0,
+    wpm: 0,
+    cpm: 0,
+    acc: 0,
   })
 
   useEffect(() => {
+
+    //on entering page fetch text to type
 
     if (test.api === 0 && text.original === "") {
       void fetchTechyText()
@@ -44,8 +56,10 @@ export default function TextField() {
   }, []);
 
   async function fetchTechyText() {
-    try {
 
+    //make api request en push response to state
+
+    try {
       const response = await axios.get("https://techy-api.vercel.app/api/json")
       let sentence = response.data.message + ". "
 
@@ -65,10 +79,12 @@ export default function TextField() {
   }
 
   async function fetchWhatTheCommitText() {
-    try {
 
+    //make api request en push response to state
+
+    try {
       const response = await axios.get("https://whatthecommit.com/index.txt")
-      let sentence = response.data + " "
+      let sentence = response.data
 
       setText({
         ...text,
@@ -87,6 +103,8 @@ export default function TextField() {
 
   async function uploadWPM(wpm) {
 
+    //get score with api request
+
     //get JWT-token
     const JWT = localStorage.getItem('token')
     let result = 0
@@ -103,16 +121,16 @@ export default function TextField() {
       console.error(e);
     }
 
+    //combine old en new score en divide by 2
     let avrWpm
-
     if (result.data.info === undefined) {
       avrWpm = 0
     } else {
       avrWpm = parseInt(result.data.info)
     }
-
     const newScore = Math.round(avrWpm + wpm) / 2
 
+    //push new score to server
     if (JWT) {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
@@ -130,8 +148,7 @@ export default function TextField() {
   }
 
   function updateScoreKeystroke(total, corrected, mistake) {
-
-    //always update keystroke total
+    //counts keystrokes
     setScore({
       ...score, keyStrokes: {
         total: score.keyStrokes.total += total,
@@ -346,6 +363,8 @@ export default function TextField() {
 
   function onResetButton() {
 
+    //reset all parameters en fetch new text
+
     setTest({
       ...test, hasStarted: false, completed: false, startTime: 0, finishTime: 0,
     })
@@ -369,9 +388,6 @@ export default function TextField() {
 
     // Handles user input based on the key pressed
 
-    //timer
-    timer(e.timeStamp)
-
     if (e.keyCode === 112 || e.keyCode === 113 || e.keyCode === 114 || e.keyCode === 115 || e.keyCode === 116 || e.keyCode === 117 || e.keyCode === 118 || e.keyCode === 119 || e.keyCode === 120 || e.keyCode === 121 || e.keyCode === 122 || e.keyCode === 123 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 33 || e.keyCode === 34 || e.keyCode === 46 || e.keyCode === 35 || e.keyCode === 36 || e.altKey || e.keyCode === 18 || e.keyCode === 20 || e.keyCode === 222 || e.keyCode === 16 || e.keyCode === 9 || e.keyCode === 173 || e.keyCode === 174 || e.keyCode === 175 || e.keyCode === 27 || e.keyCode === 177 || e.keyCode === 179 || e.keyCode === 176 || e.keyCode === 91 || e.keyCode === 192) {
 
       // Disabled keys: F-keys, arrows, pageup pagedown, home end.
@@ -389,7 +405,7 @@ export default function TextField() {
 
     } else if (e.ctrlKey) {
 
-      //catch key ctrl to prevent "control" input in text.user
+      //catch key ctrl to prevent the word "control" input in text.user
 
     } else if (e.keyCode === 32) { // ======================================== WORD ---> WORD
 
@@ -427,18 +443,23 @@ export default function TextField() {
 
     } else if (time > test.finishTime) {
 
-      const minute = 1
-      const wpm = (score.keyStrokes.total / 5) / 1
+      //calculate wpm
+      const wpm = (score.keyStrokes.total / 5)
       const acc = (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100
+      const cpm = wpm * acc
 
       setScore({
         ...score,
         wpm: wpm,
+        cpm: cpm,
         acc: acc,
       })
 
+      //reset test
       setTest({...test, hasStarted: true, completed: true,})
-      void uploadWPM(wpm)
+
+      //upload score if user
+      if (isAuth) {void uploadWPM(wpm)}
     }
   }
 
@@ -467,6 +488,7 @@ export default function TextField() {
             className="text-area-input"
             onKeyDown={(e) => {
               handleUserInput(e)
+              timer(e.timeStamp)
             }}
           ></textarea>
         </div>
@@ -482,7 +504,7 @@ export default function TextField() {
           keystrokeCorrected={score.keyStrokes.corrected}
           wordsTotal={score.wordsTotal}
           sentenceTotal={text.sentenceIdx}
-          wpm={(score.keyStrokes.total / 5) / 1}
+          wpm={(score.keyStrokes.total / 5)}
           acc={((score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100).toPrecision(4)}
           reset={onResetButton}
         />
@@ -490,7 +512,7 @@ export default function TextField() {
           <button
             className="reset-button"
             onClick={() => onResetButton()}
-          ><img className="reset-button-img" src={resetButton} alt=""/>
+          ><img className="reset-button-img" src={resetButton} alt="reset button"/>
           </button>
         </div>
       </section>
