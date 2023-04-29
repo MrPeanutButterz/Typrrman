@@ -26,24 +26,20 @@ export default function SignIn() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    if (details.password.length >= 6) {
-      try {
-        const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
-          "username": details.username,
-          "password": details.password,
-        }, {
-          cancelToken: source.token,
-        });
+    try {
+      const response = await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signin', {
+        "username": details.username,
+        "password": details.password,
+      }, {
+        cancelToken: source.token,
+      });
 
-        //set user context with JWT token
-        login(response.data.accessToken, details.rememberMe);
+      //set user context with JWT token
+      login(response.data.accessToken, details.rememberMe);
 
-      } catch (e) {
-        console.error(e);
-        toggleError({...error, username: true})
-      }
-    } else {
-      toggleError({...error, password: true})
+    } catch (e) {
+      console.error(e);
+      toggleError({username: true, password: true})
     }
   }
 
@@ -52,14 +48,15 @@ export default function SignIn() {
       <form onSubmit={handleSubmit}>
         <div className="form-container">
 
-          <h1>Sign In</h1><span>Please fill in this form to login your account.</span>
-          <br/>
+          <h1>Sign In</h1>
+          <p>Please fill in this form to login your account.</p>
 
           <label htmlFor="username-field">
             <input
               type="text"
               id="username-field"
               name="username"
+              className="input-field"
               autoComplete="username"
               value={details.username}
               placeholder="username"
@@ -69,7 +66,7 @@ export default function SignIn() {
               }}
 
             />
-            <div>{error.username && <p className="error">This is unknown account.</p>}</div>
+            <div>{error.username && <p className="error-message">Please enter you username.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -77,6 +74,7 @@ export default function SignIn() {
               type="password"
               id="password-field"
               name="password"
+              className="input-field"
               autoComplete="current-password"
               value={details.password}
               placeholder="password"
@@ -85,7 +83,7 @@ export default function SignIn() {
                 toggleError({...error, password: false})
               }}
             />
-            <div>{error.password && <p className="error">Passwords must contain 6 characters.</p>}</div>
+            <div>{error.password && <p className="error-message">Please enter you password.</p>}</div>
           </label>
 
           <label>

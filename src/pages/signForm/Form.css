@@ -4,20 +4,17 @@
     border: 1px solid var(--secondary);
 }
 
-input[type=text],
-input[type=password],
-input[type=email] {
+.input-field {
     width: 100%;
     padding: 15px;
     margin-top: 20px;
     display: inline-block;
     border: none;
     background: var(--primary);
+    font-size: 16px;
 }
 
-input[type=text]:focus,
-input[type=email]:focus,
-input[type=password]:focus {
+.input-field:focus {
     background-color: #ddd;
     outline: none;
 }
@@ -61,6 +58,6 @@ input[type=password]:focus {
     color: var(--secondary);
 }
 
-.error {
+.error-message {
     color: var(--error);
 }

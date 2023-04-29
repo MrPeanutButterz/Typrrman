@@ -22,6 +22,8 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault()
 
+    //todo validate email
+
     if (details.password.length >= 6) {
       try {
         await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signup', {
@@ -49,14 +51,15 @@ export default function SignUp() {
       <form onSubmit={handleSubmit}>
         <div className="form-container">
 
-          <h1>Sign Up</h1><span>Please fill in this form to create an account.</span>
-          <br/>
+          <h1>Sign Up</h1>
+          <p>Please fill in this form to create an account.</p>
 
           <label htmlFor="email-field">
             <input
               type="email"
               id="email-field"
               name="email"
+              className="input-field"
               autoComplete="email"
               value={details.email}
               placeholder="email"
@@ -65,7 +68,7 @@ export default function SignUp() {
                 toggleError({...error, email: false})
               }}
             />
-            <div>{error.email && <p className="error">This account already exists.</p>}</div>
+            <div>{error.email && <p className="error-message">This account already exists.</p>}</div>
           </label>
 
           <label htmlFor="username-field">
@@ -73,6 +76,7 @@ export default function SignUp() {
               type="text"
               id="username-field"
               name="username"
+              className="input-field"
               autoComplete="username"
               value={details.username}
               placeholder="username"
@@ -82,7 +86,7 @@ export default function SignUp() {
               }}
 
             />
-            <div>{error.username && <p className="error">Username may only contain character en numbers.</p>}</div>
+            <div>{error.username && <p className="error-message">Username may only contain character en numbers.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -90,6 +94,7 @@ export default function SignUp() {
               type="password"
               id="password-field"
               name="password"
+              className="input-field"
               autoComplete="current-password"
               value={details.password}
               placeholder="password"
@@ -98,7 +103,7 @@ export default function SignUp() {
                 toggleError({...error, password: false})
               }}
             />
-            <div>{error.password && <p className="error">Passwords must contain 6 characters.</p>}</div>
+            <div>{error.password && <p className="error-message">Create a password with at least 6 characters.</p>}</div>
           </label>
 
           <button
