@@ -12,4 +12,16 @@ main {
 
     background-color: var(--background);
     color: var(--primary);
+
+
+    /*background-color: #212223;*/
+    background-image: radial-gradient(circle, transparent 1rem, var(--background) 1rem),
+    linear-gradient(#1a3a3a 0.5rem, transparent 0.5rem),
+    linear-gradient(90deg, #1a3a3a 0.5rem, transparent 0.5rem);
+    background-size: 5rem 5rem;
+    background-position: 5.25rem 5.25rem, 2.5rem 2.5rem, 2.5rem 2.5rem;
+}
+
+.external-link {
+    color: var(--secondary);
 }

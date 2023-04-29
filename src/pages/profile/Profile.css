@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    padding: 50px;
 }
 
 .profile-container {
@@ -29,4 +30,15 @@
 
 .change-detail {
     color: var(--secondary);
+}
+
+@media only screen and (max-width: 600px) {
+
+    .profile-container {
+        flex-direction: column;
+    }
+
+    .profile-wrapper {
+        padding: 15px;
+    }
 }

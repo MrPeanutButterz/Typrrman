@@ -9,15 +9,6 @@
 
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 .header > h1 {
     text-align: center;
     letter-spacing: 0.05em;
@@ -91,4 +82,29 @@
 
 .reset-button-img {
     height: 50px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .reset-button {
+        width: 100%;
+        height: 40px;
+    }
+
+    .reset-button-img {
+        height: 25px;
+    }
+
+    .label {
+        width: 250px;
+        margin: 10px auto;
+    }
 }
