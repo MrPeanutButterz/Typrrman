@@ -32,7 +32,7 @@ export default function App() {
           <Route path="/profile" element={isAuth ? <Profile/> : <Typrr/>}></Route>
           <Route path="*" element={<Page404/>}></Route>
         </Routes>
-        <footer><a href="https://www.novi.nl/" target="_blank">NOVI Eindopdracht</a></footer>
+        <footer><a href="https://github.com/MrPeanutbutterz/Typrrman" target="_blank">Git</a></footer>
       </main>
     </>
   );

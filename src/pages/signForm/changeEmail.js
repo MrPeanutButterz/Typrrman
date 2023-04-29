@@ -2,7 +2,6 @@ import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 
-import protectionWhite from "../../assets/protection.png"
 import {useNavigate} from "react-router-dom";
 import userWhite from "../../assets/user.png";
 

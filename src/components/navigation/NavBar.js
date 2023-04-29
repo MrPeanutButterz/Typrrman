@@ -3,7 +3,7 @@ import {useContext} from "react";
 import {NavLink} from "react-router-dom";
 import logo from "../../assets/keyboard.png"
 import userIcon from "../../assets/user.png"
-import loginIcon from "../../assets/039-login.png"
+import loginIcon from "../../assets/login.png"
 import {UserContext} from "../../context/UserContext";
 import capitalizeFirstLetter from "../helpers/capitalizeFirstLetter"
 

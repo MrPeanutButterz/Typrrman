@@ -2,7 +2,6 @@ import axios from "axios";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 
-import protectionWhite from "../../assets/protection.png"
 import {useNavigate} from "react-router-dom";
 
 export default function ChangePassword() {
@@ -48,7 +47,6 @@ export default function ChangePassword() {
         <h3 className="error-message">{message}</h3>
 
         <div className="login-input-container">
-          <img src={protectionWhite} alt="icon" className="login-logos"/>
           <label htmlFor="newPwd"></label>
           <input
             type="password"
@@ -66,7 +64,6 @@ export default function ChangePassword() {
         </div>
 
         <div className="login-input-container">
-          <img src={protectionWhite} alt="icon" className="login-logos"/>
           <label htmlFor="repeatPwd"></label>
           <input
             type="password"
