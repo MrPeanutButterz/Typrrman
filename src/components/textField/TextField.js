@@ -5,6 +5,7 @@ import TestResults from "../testResult/TestResult";
 import resetButton from "../../assets/reset.png";
 import {useContext} from "react";
 import {UserContext} from "../../context/UserContext";
+import unpackScore from "../helpers/unpackScore";
 
 
 export default function TextField() {
@@ -14,7 +15,7 @@ export default function TextField() {
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
-    lengthInSeconds: 60000,
+    lengthInSeconds: 2000,
     startTime: 0,
     finishTime: 0,
     api: 1,
@@ -101,14 +102,13 @@ export default function TextField() {
     }
   }
 
-  async function uploadWPM(wpm) {
+  async function uploadWPM(wpm, acc) {
 
     //get score with api request
 
     //get JWT-token
     let JWT = localStorage.getItem('token')
     let result
-
     try {
       //get user data with JWT
       result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
@@ -121,21 +121,15 @@ export default function TextField() {
       console.error(e);
     }
 
-    //combine old en new score en divide by 2
-    let avrWpm
-    if (result.data.info === undefined) {
-      avrWpm = 0
-    } else {
-      avrWpm = parseInt(result.data.info)
-    }
-    const newScore = Math.round(avrWpm + wpm) / 2
+    //deconstruct, modify, construct
+    const score = unpackScore(result.data.info)
 
     //push new score to server
     if (JWT) {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
-          "info": newScore,
-        },{
+          "info": `WPM:${(score.WPM + wpm) / 2} ACC:${(score.ACC + acc) / 2}`,
+        }, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${JWT}`,
@@ -449,7 +443,9 @@ export default function TextField() {
       setTest({...test, hasStarted: true, completed: true,})
 
       //upload score if user
-      if (isAuth) {void uploadWPM(wpm)}
+      if (isAuth) {
+        void uploadWPM(wpm, acc)
+      }
     }
   }
 
