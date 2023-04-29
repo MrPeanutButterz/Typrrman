@@ -4,11 +4,12 @@ import {UserContext} from "../../context/UserContext";
 import capitalizeFirstLetter from "../../components/helpers/capitalizeFirstLetter";
 import {NavLink} from "react-router-dom";
 import axios from "axios";
+import unpackScore from "../../components/helpers/unpackScore";
 
 export default function Profile() {
 
   const {user, logout} = useContext(UserContext);
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState({})
 
   useEffect(() => {
     void getScore()
@@ -28,8 +29,7 @@ export default function Profile() {
         },
       });
       //push to state
-      console.log(response.data)
-      setScore(response.data.info)
+      setScore(unpackScore(response.data.info))
     } catch (e) {
       console.error(e);
     }
@@ -48,7 +48,8 @@ export default function Profile() {
         </div>
         <div id="separator"></div>
         <div className="info-container">
-          <h1>Average wpm: {score}</h1>
+          <h1>Average word per minute: {score.WPM}</h1>
+          <h1>Average accuracy: {score.ACC}%</h1>
         </div>
       </div>
     </section>

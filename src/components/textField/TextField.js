@@ -15,7 +15,7 @@ export default function TextField() {
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
-    lengthInSeconds: 2000,
+    lengthInSeconds: 10000,
     startTime: 0,
     finishTime: 0,
     api: 1,
@@ -128,7 +128,7 @@ export default function TextField() {
     if (JWT) {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
-          "info": `WPM:${(score.WPM + wpm) / 2} ACC:${(score.ACC + acc) / 2}`,
+          "info": `WPM:${Math.ceil(score.WPM + wpm) / 2} ACC:${Math.ceil(score.ACC + acc) / 2}`,
         }, {
           headers: {
             "Content-Type": "application/json",
