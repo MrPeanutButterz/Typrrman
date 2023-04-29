@@ -16,3 +16,4 @@ communication and collaboration within the team.
 The ultimate goal is to enable office workers to type as fast as they think, freeing up more time for them to
 concentrate on the substance of their work and less time on typing. This will enable them to get more done in less time
 and enjoy more time off.
+

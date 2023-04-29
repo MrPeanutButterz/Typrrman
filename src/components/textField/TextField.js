@@ -15,7 +15,7 @@ export default function TextField() {
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
-    lengthInSeconds: 10000,
+    lengthInSeconds: 5000,
     startTime: 0,
     finishTime: 0,
     api: 1,
@@ -108,10 +108,10 @@ export default function TextField() {
 
     //get JWT-token
     let JWT = localStorage.getItem('token')
-    let result
+    let response
     try {
       //get user data with JWT
-      result = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
+      response = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${JWT}`,
@@ -122,7 +122,14 @@ export default function TextField() {
     }
 
     //deconstruct, modify, construct
-    const score = unpackScore(result.data.info)
+    let score
+    if (response.data.info === undefined) {
+      //if a first time user has no info section
+      score = {WPM: wpm, ACC: acc}
+    } else {
+      //if a  user has info section
+      score = unpackScore(response.data.info)
+    }
 
     //push new score to server
     if (JWT) {

@@ -32,7 +32,10 @@ export default function App() {
           <Route path="/profile" element={isAuth ? <Profile/> : <Typrr/>}></Route>
           <Route path="*" element={<Page404/>}></Route>
         </Routes>
-        <footer><a href="https://github.com/MrPeanutbutterz/Typrrman" target="_blank">Git</a></footer>
+        <footer>
+          <a href="https://github.com/MrPeanutbutterz/Typrrman" target="_blank">Github </a>
+          <a href="https://www.linkedin.com/in/charlie-eysbroek-aa229a108/" target="_blank">LinkedIn</a>
+        </footer>
       </main>
     </>
   );
