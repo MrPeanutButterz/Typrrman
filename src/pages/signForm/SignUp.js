@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {NavLink, useNavigate} from 'react-router-dom';
 import "./Form.css"
 import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
+import checkUsername from "../../components/helpers/checkUserName";
+import checkEmail from "../../components/helpers/checkEmail";
+
 
 export default function SignUp() {
 
   const [details, setDetails] = useState({email: "", username: "", password: ""})
-  const [error, toggleError] = useState({email: false, username: false, password: false})
+  const [error, toggleError] = useState({email: false, username: false, password: false, accountExists: false})
 
   // we maken een canceltoken aan voor ons netwerk-request
   const source = axios.CancelToken.source();
@@ -22,9 +25,16 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    //todo validate email
+    if (!checkEmail(details.email)) {
+      toggleError({...error, email: true})
 
-    if (details.password.length >= 6) {
+    } else if (!checkUsername(details.username)) {
+      toggleError({...error, username: true})
+
+    } else if (details.password.length < 6) {
+      toggleError({...error, password: true})
+
+    } else {
       try {
         await axios.post('https://frontend-educational-backend.herokuapp.com/api/auth/signup', {
           "username": details.username,
@@ -39,10 +49,8 @@ export default function SignUp() {
         navigate.push('/signin');
       } catch (e) {
         console.error(e);
-        toggleError({...error, email: true})
+        toggleError({...error, accountExists: true})
       }
-    } else {
-      toggleError({...error, password: true})
     }
   }
 
@@ -59,7 +67,7 @@ export default function SignUp() {
               type="email"
               id="email-field"
               name="email"
-              className={!error.email ? "input-field" : "input-field input-field-error"}
+              className="input-field"
               autoComplete="email"
               value={details.email}
               placeholder="email"
@@ -68,7 +76,10 @@ export default function SignUp() {
                 toggleError({...error, email: false})
               }}
             />
-            <div className="error-message-container">{error.email && <p className="error-message">This account already exists.</p>}</div>
+            <div className="error-message-container">
+              {error.accountExists && <p className="error-message">This account already exists.</p>}
+              {error.email && <p className="error-message">This email doesn't seem right.</p>}
+            </div>
           </label>
 
           <label htmlFor="username-field">
@@ -76,7 +87,7 @@ export default function SignUp() {
               type="text"
               id="username-field"
               name="username"
-              className={!error.username ? "input-field" : "input-field input-field-error"}
+              className="input-field"
               autoComplete="username"
               value={details.username}
               placeholder="username"
@@ -94,7 +105,7 @@ export default function SignUp() {
               type="password"
               id="password-field"
               name="password"
-              className={!error.password ? "input-field" : "input-field input-field-error"}
+              className="input-field"
               autoComplete="current-password"
               value={details.password}
               placeholder="password"
