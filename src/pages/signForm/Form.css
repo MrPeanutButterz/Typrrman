@@ -4,19 +4,30 @@
     border: 1px solid var(--secondary);
 }
 
+.form-container > p {
+    margin-bottom: 20px;
+}
+
 .input-field {
     width: 100%;
     padding: 15px;
-    margin-top: 20px;
     display: inline-block;
     border: none;
     background: var(--primary);
     font-size: 16px;
 }
 
+/*.input-field-error {
+    border-bottom: 3px solid var(--error);
+}*/
+
 .input-field:focus {
     background-color: #ddd;
     outline: none;
+}
+
+.error-message-container {
+    height: 30px;
 }
 
 .form-button {
@@ -31,7 +42,7 @@
 }
 
 .remember {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .form-button:hover {

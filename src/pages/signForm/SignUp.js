@@ -59,7 +59,7 @@ export default function SignUp() {
               type="email"
               id="email-field"
               name="email"
-              className="input-field"
+              className={!error.email ? "input-field" : "input-field input-field-error"}
               autoComplete="email"
               value={details.email}
               placeholder="email"
@@ -68,7 +68,7 @@ export default function SignUp() {
                 toggleError({...error, email: false})
               }}
             />
-            <div>{error.email && <p className="error-message">This account already exists.</p>}</div>
+            <div className="error-message-container">{error.email && <p className="error-message">This account already exists.</p>}</div>
           </label>
 
           <label htmlFor="username-field">
@@ -76,7 +76,7 @@ export default function SignUp() {
               type="text"
               id="username-field"
               name="username"
-              className="input-field"
+              className={!error.username ? "input-field" : "input-field input-field-error"}
               autoComplete="username"
               value={details.username}
               placeholder="username"
@@ -86,7 +86,7 @@ export default function SignUp() {
               }}
 
             />
-            <div>{error.username && <p className="error-message">Username may only contain character en numbers.</p>}</div>
+            <div className="error-message-container">{error.username && <p className="error-message">Username may only contain character en numbers.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -94,7 +94,7 @@ export default function SignUp() {
               type="password"
               id="password-field"
               name="password"
-              className="input-field"
+              className={!error.password ? "input-field" : "input-field input-field-error"}
               autoComplete="current-password"
               value={details.password}
               placeholder="password"
@@ -103,7 +103,7 @@ export default function SignUp() {
                 toggleError({...error, password: false})
               }}
             />
-            <div>{error.password && <p className="error-message">Create a password with at least 6 characters.</p>}</div>
+            <div className="error-message-container">{error.password && <p className="error-message">Create a password with at least 6 characters.</p>}</div>
           </label>
 
           <button

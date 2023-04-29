@@ -56,7 +56,7 @@ export default function SignIn() {
               type="text"
               id="username-field"
               name="username"
-              className="input-field"
+              className={!error.username ? "input-field" : "input-field input-field-error"}
               autoComplete="username"
               value={details.username}
               placeholder="username"
@@ -66,7 +66,7 @@ export default function SignIn() {
               }}
 
             />
-            <div>{error.username && <p className="error-message">Please enter you username.</p>}</div>
+            <div className="error-message-container">{error.username && <p className="error-message">Please enter you username.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -74,7 +74,7 @@ export default function SignIn() {
               type="password"
               id="password-field"
               name="password"
-              className="input-field"
+              className={!error.password ? "input-field" : "input-field input-field-error"}
               autoComplete="current-password"
               value={details.password}
               placeholder="password"
@@ -83,7 +83,7 @@ export default function SignIn() {
                 toggleError({...error, password: false})
               }}
             />
-            <div>{error.password && <p className="error-message">Please enter you password.</p>}</div>
+            <div className="error-message-container">{error.password && <p className="error-message">Please enter you password.</p>}</div>
           </label>
 
           <label>
