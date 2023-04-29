@@ -33,8 +33,8 @@ export default function App() {
           <Route path="*" element={<Page404/>}></Route>
         </Routes>
         <footer>
-          <a href="https://github.com/MrPeanutbutterz/Typrrman" target="_blank">Github </a>
-          <a href="https://www.linkedin.com/in/charlie-eysbroek-aa229a108/" target="_blank">LinkedIn</a>
+          <a className="external-link" href="https://github.com/MrPeanutbutterz/Typrrman" target="_blank" rel="noreferrer">Github </a>
+          <a className="external-link" href="https://www.linkedin.com/in/charlie-eysbroek-aa229a108/" target="_blank" rel="noreferrer">LinkedIn </a>
         </footer>
       </main>
     </>

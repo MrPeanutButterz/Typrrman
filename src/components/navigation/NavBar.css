@@ -6,7 +6,6 @@ nav {
     justify-content: space-between;
     width: 100vw;
     margin-top: 20px;
-    padding: 0 100px 0 100px;
 }
 
 .nav-left {
@@ -14,6 +13,7 @@ nav {
     flex-direction: row;
     align-items: flex-start;
     gap: 5px;
+    margin-left: 50px;
 }
 
 .nav-right {
@@ -21,6 +21,7 @@ nav {
     flex-direction: row;
     justify-content: center;
     gap: 5px;
+    margin-right: 50px;
 }
 
 .nav-right > h3 {
@@ -41,4 +42,49 @@ nav {
 
 .nav-icon {
     height: 45px;
+}
+
+@media only screen and (max-width: 768px) {
+    #typrr {
+        font-size: 35px;
+    }
+
+    #keyboard-logo {
+        height: 35px;
+    }
+
+    .nav-icon {
+        height: 35px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    nav {
+        padding: 0 20px;
+    }
+
+    .nav-left {
+        margin-left: 10px;
+    }
+
+    .nav-right {
+        margin-right: 10px;
+    }
+
+    .greeting {
+        color: transparent;
+        width: 0;
+    }
+
+    #typrr {
+        font-size: 30px;
+    }
+
+    #keyboard-logo {
+        height: 30px;
+    }
+
+    .nav-icon {
+        height: 30px;
+    }
 }

@@ -48,8 +48,8 @@ export default function Profile() {
         </div>
         <div id="separator"></div>
         <div className="info-container">
-          <h1>Average word per minute: {score.WPM}</h1>
-          <h1>Average accuracy: {score.ACC}%</h1>
+          <h1>Avr wpm: {score.WPM}</h1>
+          <h2>Avr accuracy: {score.ACC}%</h2>
         </div>
       </div>
     </section>

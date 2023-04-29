@@ -38,6 +38,7 @@ export default function ChangePassword() {
 
           if (e.response.data.message === "This email is already in use") {
             toggleError({...error, emailInUse: true})
+            //novi backend does not check if email is in use
           }
         }
       }
@@ -49,8 +50,8 @@ export default function ChangePassword() {
       <form onSubmit={handleSubmit}>
         <div className="form-container">
 
-          <h1>Sign Up</h1>
-          <p>Please fill in this form to create an account.</p>
+          <h1>Changes</h1>
+          <p>Please fill in this form to change your email.</p>
 
           <label htmlFor="email-field">
             <input
@@ -75,7 +76,7 @@ export default function ChangePassword() {
           <button
             type="submit"
             className="form-button form-button-space"
-          >Register
+          >Save
           </button>
         </div>
       </form>

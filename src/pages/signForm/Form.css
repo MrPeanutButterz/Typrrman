@@ -68,3 +68,11 @@
 .error-message {
     color: var(--error);
 }
+
+@media only screen and (max-width: 600px) {
+    .form-container {
+        width: 300px;
+        padding: 15px;
+        border: 0;
+    }
+}
