@@ -46,7 +46,7 @@ export default function SignUp() {
           "username": details.username,
           "email": details.email,
           "password": details.password,
-          "info": "0",
+          "info": "0:0",
           "role": ["user"],
         }, {
           cancelToken: source.token,

@@ -28,6 +28,7 @@ export default function Profile() {
         },
       });
       //push to state
+      console.log(response.data)
       setScore(response.data.info)
     } catch (e) {
       console.error(e);
