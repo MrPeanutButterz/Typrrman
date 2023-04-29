@@ -1,87 +1,98 @@
 import axios from "axios";
 import React, {useState} from "react";
-import {useForm} from "react-hook-form";
-
 import {useNavigate} from "react-router-dom";
 
 export default function ChangePassword() {
 
   const navigate = useNavigate()
-  const [message, setMessage] = useState(null)
   const JWT = localStorage.getItem('token')
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
+  const [details, setDetails] = useState({newPwd: "", repeatPwd: ""})
+  const [error, toggleError] = useState({
+    toShort: false,
+    dontMatch: false,
+  })
 
-  async function handleFormSubmit(e, data) {
+  async function handleSubmit(e) {
     e.preventDefault()
 
-    if (data.newPwd === data.repeatPwd) {
+    if (details.newPwd.length < 6) {
+      toggleError({...error, toShort: true})
+
+    } else if (details.newPwd !== details.repeatPwd) {
+      toggleError({...error, dontMatch: true})
+
+    } else {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
-          "password": data.newPwd,
-          "repeatedPassword": data.repeatPwd,
+          "password": details.newPwd,
+          "repeatedPassword": details.repeatPwd,
         }, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${JWT}`,
           },
         });
-        navigate("/")
+        navigate("/profile")
       } catch (e) {
         console.error(e);
-        setMessage(e.response.data.message)
       }
-    } else {
-      setMessage("New password is not the same")
     }
-
   }
 
-  return <>
+  return (
     <>
-      <form onSubmit={handleSubmit((data, e) => handleFormSubmit(e, data))}>
-        <h3 className="error-message">{message}</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-container">
 
-        <div className="login-input-container">
-          <label htmlFor="newPwd"></label>
-          <input
-            type="password"
-            name="newPwd"
-            className={!errors.password ? "input-box" : "input-box-error"}
-            placeholder={!errors.password ? "new password" : errors.password.message}
-            autoComplete="newPwd"
-            {...register("newPwd", {
-              required: {
-                value: true,
-                message: "new password is required"
-              }
-            })}
-          />
+          <h1>Changes</h1>
+          <p>Please fill in this form to you password.</p>
+
+          <label htmlFor="username-field">
+            <input
+              type="password"
+              id="new-password-field"
+              name="new-password"
+              className="input-field"
+              autoComplete="new-password"
+              value={details.newPwd}
+              placeholder="new password"
+              onChange={(e) => {
+                setDetails({...details, newPwd: e.target.value})
+                toggleError({...error, toShort: false})
+              }}
+            />
+            <div className="error-message-container">
+              {error.toShort && <p className="error-message">Create a password with at least 6 characters.</p>}
+            </div>
+          </label>
+
+          <label htmlFor="password-field">
+            <input
+              type="password"
+              id="repeat-password-field"
+              name="password"
+              className="input-field"
+              autoComplete="current-password"
+              value={details.repeatPwd}
+              placeholder="repeat password"
+              onChange={(e) => {
+                setDetails({...details, repeatPwd: e.target.value})
+                toggleError({...error, dontMatch: false})
+              }}
+            />
+            <div className="error-message-container">
+              {error.dontMatch && <p className="error-message">Passwords don't match.</p>}
+            </div>
+          </label>
+
+          <button
+            type="submit"
+            className="form-button"
+          >Save
+          </button>
         </div>
-
-        <div className="login-input-container">
-          <label htmlFor="repeatPwd"></label>
-          <input
-            type="password"
-            name="repeatPwd"
-            className={!errors.password ? "input-box" : "input-box-error"}
-            placeholder={!errors.password ? "repeat new password" : errors.password.message}
-            autoComplete="repeatPwd"
-            {...register("repeatPwd", {
-              required: {
-                value: true,
-                message: "repeat new password is required"
-              }
-            })}
-          />
-        </div>
-
-        <button className="submit-button" type="submit">Change password</button>
       </form>
     </>
-  </>
+  )
 }

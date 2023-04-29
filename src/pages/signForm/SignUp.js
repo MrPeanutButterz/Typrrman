@@ -58,8 +58,6 @@ export default function SignUp() {
 
         if (e.response.status === 400) {
 
-          console.log(e.response.data.message)
-
           if (e.response.data.message === "This email is already in use") {
             toggleError({...error, emailInUse: true})
           }
@@ -134,8 +132,9 @@ export default function SignUp() {
                 toggleError({...error, passwordInvalid: false})
               }}
             />
-            <div className="error-message-container">{error.password &&
-              <p className="error-message">Create a password with at least 6 characters.</p>}</div>
+            <div className="error-message-container">
+              {error.password && <p className="error-message">Create a password with at least 6 characters.</p>}
+            </div>
           </label>
 
           <button

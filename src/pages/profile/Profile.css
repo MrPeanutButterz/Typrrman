@@ -20,6 +20,8 @@
 
 .logout {
     background-color: transparent;
+    border: 0;
+    cursor: pointer;
     width: fit-content;
     color: var(--primary);
     font-size: 16px;

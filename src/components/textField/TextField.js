@@ -15,7 +15,7 @@ export default function TextField() {
   const [test, setTest] = useState({
     hasStarted: false,
     completed: false,
-    lengthInSeconds: 5000,
+    lengthInSeconds: 60000,
     startTime: 0,
     finishTime: 0,
     api: 1,
