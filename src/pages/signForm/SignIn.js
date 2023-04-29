@@ -66,7 +66,8 @@ export default function SignIn() {
               }}
 
             />
-            <div className="error-message-container">{error.username && <p className="error-message">Invalid username.</p>}</div>
+            <div className="error-message-container">{error.username &&
+              <p className="error-message">Invalid username.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -83,14 +84,15 @@ export default function SignIn() {
                 toggleError({...error, password: false})
               }}
             />
-            <div className="error-message-container">{error.password && <p className="error-message">Invalid password.</p>}</div>
+            <div className="error-message-container">{error.password &&
+              <p className="error-message">Invalid password.</p>}</div>
           </label>
 
           <label>
             <input
               type="checkbox"
               name="remember"
-              className="remember"
+              className="remember-checkbox"
               onChange={() => setDetails({...details, rememberMe: !details.rememberMe})}
             /> Remember me
           </label>

@@ -97,7 +97,8 @@ export default function SignUp() {
               }}
 
             />
-            <div className="error-message-container">{error.username && <p className="error-message">Username may only contain character en numbers.</p>}</div>
+            <div className="error-message-container">{error.username &&
+              <p className="error-message">Username may only contain character en numbers.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -114,7 +115,8 @@ export default function SignUp() {
                 toggleError({...error, password: false})
               }}
             />
-            <div className="error-message-container">{error.password && <p className="error-message">Create a password with at least 6 characters.</p>}</div>
+            <div className="error-message-container">{error.password &&
+              <p className="error-message">Create a password with at least 6 characters.</p>}</div>
           </label>
 
           <button

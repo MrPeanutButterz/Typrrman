@@ -17,10 +17,6 @@
     font-size: 16px;
 }
 
-/*.input-field-error {
-    border-bottom: 3px solid var(--error);
-}*/
-
 .input-field:focus {
     background-color: #ddd;
     outline: none;
@@ -41,7 +37,7 @@
     opacity: 0.9;
 }
 
-.remember {
+.remember-checkbox {
     margin-top: 10px;
 }
 
@@ -50,7 +46,7 @@
 }
 
 .form-button-space {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .link-container {
