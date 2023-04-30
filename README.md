@@ -17,3 +17,10 @@ The ultimate goal is to enable office workers to type as fast as they think, fre
 concentrate on the substance of their work and less time on typing. This will enable them to get more done in less time
 and enjoy more time off.
 
+## Features
+
+- minimalistic design
+- typing test
+- live errors
+- account system
+
