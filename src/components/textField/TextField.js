@@ -102,13 +102,15 @@ export default function TextField() {
     }
   }
 
-  async function uploadWPM(wpm, acc) {
+  async function uploadScore(wpm, acc) {
 
     //get score with api request
 
     //get JWT-token
     let JWT = localStorage.getItem('token')
     let response
+
+    //get score
     try {
       //get user data with JWT
       response = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user`, {
@@ -376,12 +378,47 @@ export default function TextField() {
       }, wordsTotal: 0, xrp: 0, wpm: 0, acc: 0,
     })
 
-    // reset parameters en fetch new data
+    //fetch new data
     if (test.api === 0) {
       void fetchTechyText()
 
     } else if (test.api === 1) {
       void fetchWhatTheCommitText()
+    }
+  }
+
+  function timer(time) {
+
+    //handles timing of the test en calculates result
+
+    if (!test.hasStarted) {
+
+      //register start en finish time en set hasStarted true
+      setTest({
+        ...test, startTime: time, finishTime: time + test.lengthInSeconds, hasStarted: true,
+      })
+
+    } else if (time > test.finishTime) {
+
+      //calculate wpm
+      const wpm = (score.keyStrokes.total / 5)
+      const acc = (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100
+      const cpm = wpm * acc
+
+      setScore({
+        ...score,
+        wpm: wpm,
+        cpm: cpm,
+        acc: acc,
+      })
+
+      //reset test
+      setTest({...test, hasStarted: true, completed: true,})
+
+      //upload score if user
+      if (isAuth) {
+        void uploadScore(wpm, acc)
+      }
     }
   }
 
@@ -418,41 +455,6 @@ export default function TextField() {
     } else { // ========================================================== CARROT ---> CARROT
       // Letter
       onCharacterForwards(e.key)
-    }
-  }
-
-  function timer(time) {
-
-    //handles timing of the test en calculates result
-
-    if (!test.hasStarted) {
-
-      //register start en finish time en set hasStarted true
-      setTest({
-        ...test, startTime: time, finishTime: time + test.lengthInSeconds, hasStarted: true,
-      })
-
-    } else if (time > test.finishTime) {
-
-      //calculate wpm
-      const wpm = (score.keyStrokes.total / 5)
-      const acc = (score.keyStrokes.total - (score.keyStrokes.mistake - score.keyStrokes.corrected)) / score.keyStrokes.total * 100
-      const cpm = wpm * acc
-
-      setScore({
-        ...score,
-        wpm: wpm,
-        cpm: cpm,
-        acc: acc,
-      })
-
-      //reset test
-      setTest({...test, hasStarted: true, completed: true,})
-
-      //upload score if user
-      if (isAuth) {
-        void uploadWPM(wpm, acc)
-      }
     }
   }
 

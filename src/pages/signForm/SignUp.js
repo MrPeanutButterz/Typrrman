@@ -31,14 +31,17 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    if (!checkEmail(details.email)) {
-      toggleError({...error, emailInvalid: true})
-
-    } else if (!checkUsername(details.username)) {
+    if (!checkUsername(details.username)) {
       toggleError({...error, usernameInvalid: true})
+      console.log("1")
+
+    } else if (!checkEmail(details.email)) {
+      toggleError({...error, emailInvalid: true})
+      console.log("2")
 
     } else if (details.password.length < 6) {
       toggleError({...error, passwordInvalid: true})
+      console.log("3")
 
     } else {
       try {
@@ -46,7 +49,6 @@ export default function SignUp() {
           "username": details.username,
           "email": details.email,
           "password": details.password,
-          "info": "0:0",
           "role": ["user"],
         }, {
           cancelToken: source.token,
@@ -113,7 +115,7 @@ export default function SignUp() {
               }}
             />
             <div className="error-message-container">
-              {error.email && <p className="error-message">This email doesn't seem right.</p>}
+              {error.emailInvalid && <p className="error-message">This email doesn't seem right.</p>}
               {error.emailInUse && <p className="error-message">This email is already in use.</p>}
             </div>
           </label>
@@ -133,7 +135,7 @@ export default function SignUp() {
               }}
             />
             <div className="error-message-container">
-              {error.password && <p className="error-message">Create a password with at least 6 characters.</p>}
+              {error.passwordInvalid && <p className="error-message">Create a password with at least 6 characters.</p>}
             </div>
           </label>
 

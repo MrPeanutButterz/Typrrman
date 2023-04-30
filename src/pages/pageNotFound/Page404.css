@@ -43,5 +43,6 @@
     .page-not-found-wrapper {
         flex-direction: column;
         padding: 15px;
+        gap: 15px;
     }
 }

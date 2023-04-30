@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
 
 export default function ChangePassword() {
 
   const navigate = useNavigate()
   const JWT = localStorage.getItem('token')
+  const {user} = useContext(UserContext);
 
   const [details, setDetails] = useState({newPwd: "", repeatPwd: ""})
   const [error, toggleError] = useState({
@@ -46,7 +49,16 @@ export default function ChangePassword() {
         <div className="form-container">
 
           <h1>Changes</h1>
-          <p>Please fill in this form to you password.</p>
+          <p>Please fill in this form to change you password.</p>
+
+          <input //Password forms should have (optionally hidden) username fields for accessibility in console even with hidden username field.
+            type="text"
+            name="email"
+            value={user.email}
+            autoComplete="email"
+            hidden={true}
+            readOnly={true}
+          />
 
           <label htmlFor="username-field">
             <input

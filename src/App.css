@@ -22,6 +22,17 @@ main {
     background-position: 5.25rem 5.25rem, 2.5rem 2.5rem, 2.5rem 2.5rem;
 }
 
-.external-link {
+footer {
+    height: 60px;
+    display: flex;
+    gap: 20px;
+}
+
+#external-link {
+    color: var(--primary);
+}
+
+#external-link:hover {
     color: var(--secondary);
+    text-decoration: underline;
 }

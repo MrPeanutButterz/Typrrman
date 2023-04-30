@@ -13,29 +13,43 @@
     gap: 30px;
 }
 
+.profile,
+.score {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 #separator {
     background-color: var(--secondary);
     height: 100%;
     width: 3px;
 }
 
-.logout {
+.button-logout {
     background-color: transparent;
+    margin-top: 2px;
     border: 0;
     cursor: pointer;
     width: fit-content;
-    color: var(--primary);
+    color: var(--error);
     font-size: 16px;
 }
 
-.change-detail {
+.change-profile {
+    color: var(--primary);
+}
+
+.motivation-link {
     color: var(--secondary);
+    text-decoration: underline;
 }
 
 @media only screen and (max-width: 600px) {
 
     .profile-container {
         flex-direction: column;
+        gap: 15px;
     }
 
     .profile-wrapper {

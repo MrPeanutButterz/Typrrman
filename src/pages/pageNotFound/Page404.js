@@ -10,7 +10,7 @@ export default function Page404() {
       <div id="separator"></div>
       <div className="quote-container">
         <q>Just because someone stumbles, loses their way... <br/>
-          doesn't mean they're lost forever.</q>
+          Doesn't mean they're lost forever.</q>
         <i>-Charles Xavier-</i>
       </div>
     </div>

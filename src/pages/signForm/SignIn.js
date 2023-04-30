@@ -11,7 +11,7 @@ export default function SignIn() {
   const {login} = useContext(UserContext);
 
   const [details, setDetails] = useState({username: "", password: ""})
-  const [error, toggleError] = useState({username: false, password: false})
+  const [error, toggleError] = useState({usernameInvalid: false, passwordInvalid: false})
 
   // we maken een canceltoken aan voor ons netwerk-request
   const source = axios.CancelToken.source();
@@ -39,7 +39,7 @@ export default function SignIn() {
 
     } catch (e) {
       console.error(e);
-      toggleError({username: true, password: true})
+      toggleError({usernameInvalid: true, passwordInvalid: true})
     }
   }
 
@@ -62,12 +62,12 @@ export default function SignIn() {
               placeholder="username"
               onChange={(e) => {
                 setDetails({...details, username: e.target.value})
-                toggleError({...error, username: false})
+                toggleError({...error, usernameInvalid: false})
               }}
 
             />
-            <div className="error-message-container">{error.username &&
-              <p className="error-message">Invalid username.</p>}</div>
+            <div className="error-message-container">
+              {error.usernameInvalid && <p className="error-message">Invalid username.</p>}</div>
           </label>
 
           <label htmlFor="password-field">
@@ -81,11 +81,11 @@ export default function SignIn() {
               placeholder="password"
               onChange={(e) => {
                 setDetails({...details, password: e.target.value})
-                toggleError({...error, password: false})
+                toggleError({...error, passwordInvalid: false})
               }}
             />
-            <div className="error-message-container">{error.password &&
-              <p className="error-message">Invalid password.</p>}</div>
+            <div className="error-message-container">
+              {error.passwordInvalid && <p className="error-message">Invalid password.</p>}</div>
           </label>
 
           <button

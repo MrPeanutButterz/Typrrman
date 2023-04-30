@@ -9,13 +9,13 @@
 .loading-bar {
     height: 50px;
     width: 50px;
-    background-color: var(--error);
-    animation: spin 1s linear infinite;
+    background-color: var(--secondary);
+    animation: spin 1400ms linear infinite;
 }
 
 @keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
+    from {transform:rotate(0deg)}
+    to {transform:rotate(360deg)}
 }
 
 .loading-text {
@@ -23,4 +23,11 @@
     margin-top: 50px;
     font-family: monospace;
     font-size: xx-large;
+}
+
+@media only screen and (max-width: 600px) {
+    .loading-bar {
+        height: 30px;
+        width: 30px;
+    }
 }
