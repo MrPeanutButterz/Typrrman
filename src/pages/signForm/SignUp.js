@@ -12,16 +12,13 @@ export default function SignUp() {
     emailInvalid: false,
     usernameInvalid: false,
     passwordInvalid: false,
-    accountExists: false,
     usernameInUse: false,
     emailInUse: false,
   })
 
-  // we maken een cancel-token aan voor ons netwerk-request
   const source = axios.CancelToken.source();
   const navigate = useNavigate();
 
-  // mocht onze pagina ge-unmount worden voor we klaar zijn met data ophalen, abort het request
   useEffect(() => {
     return function cleanup() {
       source.cancel();

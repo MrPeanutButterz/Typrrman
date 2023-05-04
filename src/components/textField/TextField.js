@@ -137,7 +137,9 @@ export default function TextField() {
     if (JWT) {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
-          "info": `WPM:${Math.ceil(score.WPM + wpm) / 2} ACC:${Math.ceil(score.ACC + acc) / 2}`,
+          "info": `
+          WPM:${Math.ceil(score.WPM + wpm) / 2} 
+          ACC:${Math.ceil(score.ACC + acc) / 2}`,
         }, {
           headers: {
             "Content-Type": "application/json",

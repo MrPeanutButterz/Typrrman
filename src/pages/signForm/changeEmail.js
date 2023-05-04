@@ -38,7 +38,6 @@ export default function ChangePassword() {
 
           if (e.response.data.message === "This email is already in use") {
             toggleError({...error, emailInUse: true})
-            //novi backend does not check if email is in use
           }
         }
       }

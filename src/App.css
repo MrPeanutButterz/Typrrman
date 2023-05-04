@@ -13,8 +13,6 @@ main {
     background-color: var(--background);
     color: var(--primary);
 
-
-    /*background-color: #212223;*/
     background-image: radial-gradient(circle, transparent 1rem, var(--background) 1rem),
     linear-gradient(#1a3a3a 0.5rem, transparent 0.5rem),
     linear-gradient(90deg, #1a3a3a 0.5rem, transparent 0.5rem);

@@ -13,10 +13,8 @@ export default function SignIn() {
   const [details, setDetails] = useState({username: "", password: ""})
   const [error, toggleError] = useState({usernameInvalid: false, passwordInvalid: false})
 
-  // we maken een canceltoken aan voor ons netwerk-request
   const source = axios.CancelToken.source();
 
-  // mocht onze pagina ge-unmount worden voor we klaar zijn met data ophalen, abort het request
   useEffect(() => {
     return function cleanup() {
       source.cancel();
