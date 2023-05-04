@@ -95,7 +95,7 @@ export default function SignUp() {
               }}
             />
             <div className="error-message-container">
-              {error.username && <p className="error-message">Username may only contain numbers & character.</p>}
+              {error.usernameInvalid && <p className="error-message">Username may only contain numbers & character.</p>}
               {error.usernameInUse && <p className="error-message">This username is already in use.</p>}
             </div>
           </label>
