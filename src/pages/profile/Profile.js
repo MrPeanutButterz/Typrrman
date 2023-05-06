@@ -28,6 +28,7 @@ export default function Profile() {
           Authorization: `Bearer ${JWT}`,
         },
       });
+
       //push to state
       if (response.data.info !== undefined) {
         setScore(unpackScore(response.data.info))

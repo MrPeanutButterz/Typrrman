@@ -137,9 +137,7 @@ export default function TextField() {
     if (JWT) {
       try {
         await axios.put('https://frontend-educational-backend.herokuapp.com/api/user', {
-          "info": `
-          WPM:${Math.ceil(score.WPM + wpm) / 2} 
-          ACC:${Math.ceil(score.ACC + acc) / 2}`,
+          "info": `WPM:${Math.ceil(score.WPM + wpm) / 2} ACC:${Math.ceil(score.ACC + acc) / 2}`,
         }, {
           headers: {
             "Content-Type": "application/json",
@@ -389,6 +387,20 @@ export default function TextField() {
     }
   }
 
+  function tips() {
+    let tip
+    if (text.onScreenGhost.length === 1) {
+      tip = "enter"
+    } else if (text.onScreenGhost[0] === " ") {
+      tip = "space"
+    } else {
+      tip = text.onScreenGhost[0]
+    }
+    return <>
+      <p id="tips">Tip: {tip}</p>
+    </>
+  }
+
   function timer(time) {
 
     //handles timing of the test en calculates result
@@ -488,6 +500,9 @@ export default function TextField() {
               timer(e.timeStamp)
             }}
           ></textarea>
+          <div className="tip-container">
+            {tips()}
+          </div>
         </div>
       </section>);
   }
