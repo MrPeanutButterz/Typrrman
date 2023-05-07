@@ -74,6 +74,7 @@ export default function UserContextProvider({children}) {
           email: result.data.email,
           id: result.data.id,
           info: result.data.info,
+          profilePicture: result.data.profilePicture,
         },
         status: 'done',
       });

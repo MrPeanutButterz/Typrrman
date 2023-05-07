@@ -397,7 +397,7 @@ export default function TextField() {
       tip = text.onScreenGhost[0]
     }
     return <>
-      <p id="tips">Tip: {tip}</p>
+      <p id="tips">Next: {tip}</p>
     </>
   }
 
